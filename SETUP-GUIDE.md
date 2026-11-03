@@ -34,15 +34,17 @@ Do these inside your Keepsake project on Vercel.
 
 ### 2a. Photo storage
 
-1. Click the **Storage** tab at the top of the project.
-2. Click **Create** (or **Create Database**), then choose **Blob**.
-3. Name it `keepsake-photos`.
-4. **Important:** choose **Public** access. Private storage will not work with this site.
+1. Open your Keepsake project and click **Storage** in the **left-hand menu**. On a phone or narrow window, tap the menu icon (☰) first to show that menu.
+   - Can't find it there? Go back to your main Vercel dashboard (click your name or team at the top left) and look for **Storage** in its left-hand menu.
+2. Click **Create Storage** (it may say **Create Database** or **Connect Database**), then choose **Blob** and click **Continue**.
+3. **Important:** choose **Public** access. Private storage will not work with this site, and this can't be changed later.
+4. Name it `keepsake-photos`.
 5. Click **Create**. When asked, connect it to the Keepsake project with all environments ticked (Production, Preview, Development).
 
 ### 2b. Album database
 
-1. Still in the **Storage** tab, click **Create** again and choose **Neon** (listed as Postgres / Serverless Postgres).
+1. Still in **Storage**, click **Create Storage** again and choose **Neon** (it may be listed as Postgres or Serverless Postgres).
+   - If Neon isn't listed, open the **Marketplace** (in the dashboard's left-hand menu, or at vercel.com/marketplace), search for **Neon**, and click **Install**.
 2. Accept the terms, pick the **Free** plan and the region closest to you, then click **Create**.
 3. Connect it to the Keepsake project with all environments ticked.
 
