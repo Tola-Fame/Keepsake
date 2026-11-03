@@ -183,3 +183,26 @@ export function pageFonts(page: Page) {
     .filter((e): e is TextEl => e.type === "text")
     .map((t) => ({ family: t.fontFamily, style: t.fontStyle }));
 }
+
+/** New x/y/rotation that rotates an element around its center instead of its top-left corner. */
+export function rotateAroundCenter(el: { x: number; y: number; width: number; height: number; rotation: number }, rotation: number) {
+  const r0 = (el.rotation * Math.PI) / 180;
+  const cx = el.x + (el.width / 2) * Math.cos(r0) - (el.height / 2) * Math.sin(r0);
+  const cy = el.y + (el.width / 2) * Math.sin(r0) + (el.height / 2) * Math.cos(r0);
+  const r1 = (rotation * Math.PI) / 180;
+  return {
+    rotation,
+    x: Math.round(cx - (el.width / 2) * Math.cos(r1) + (el.height / 2) * Math.sin(r1)),
+    y: Math.round(cy - (el.width / 2) * Math.sin(r1) - (el.height / 2) * Math.cos(r1)),
+  };
+}
+
+/** True when a page-space point falls inside an element (taking rotation into account). */
+export function hitTest(el: { x: number; y: number; width: number; height: number; rotation: number }, px: number, py: number) {
+  const r = (-el.rotation * Math.PI) / 180;
+  const dx = px - el.x;
+  const dy = py - el.y;
+  const lx = dx * Math.cos(r) - dy * Math.sin(r);
+  const ly = dx * Math.sin(r) + dy * Math.cos(r);
+  return lx >= 0 && ly >= 0 && lx <= el.width && ly <= el.height;
+}
