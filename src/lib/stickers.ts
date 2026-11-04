@@ -192,6 +192,41 @@ export const STICKERS: StickerDef[] = [
     tags: ["family", "pets"],
     svg: `<g fill="{C}"><ellipse cx="50" cy="66" rx="22" ry="18"/><ellipse cx="22" cy="42" rx="9" ry="12"/><ellipse cx="40" cy="26" rx="9" ry="12"/><ellipse cx="60" cy="26" rx="9" ry="12"/><ellipse cx="78" cy="42" rx="9" ry="12"/></g>`,
   },
+  {
+    id: "butterfly",
+    name: "Butterfly",
+    defaultColor: "#c026a3",
+    tags: ["birthday", "baby", "wedding"],
+    svg: `<g fill="{C}"><path d="M48 46 C30 10 4 14 8 36 C11 52 34 54 48 50 Z"/><path d="M52 46 C70 10 96 14 92 36 C89 52 66 54 52 50 Z"/><path opacity=".7" d="M48 54 C30 56 14 70 22 84 C30 94 44 80 48 60 Z"/><path opacity=".7" d="M52 54 C70 56 86 70 78 84 C70 94 56 80 52 60 Z"/></g><circle cx="27" cy="32" r="5" fill="#fff" opacity=".35"/><circle cx="73" cy="32" r="5" fill="#fff" opacity=".35"/><ellipse cx="50" cy="56" rx="3.5" ry="22" fill="#3b2a3f"/><path d="M49 35 C46 25 40 20 35 18 M51 35 C54 25 60 20 65 18" stroke="#3b2a3f" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+  },
+  {
+    id: "bauble",
+    name: "Bauble",
+    defaultColor: "#c62828",
+    tags: ["holiday", "winter"],
+    svg: `<path d="M45 10 C45 3 55 3 55 10" stroke="#a1887f" stroke-width="2.5" fill="none"/><rect x="42" y="11" width="16" height="10" rx="2" fill="#c9a227"/><circle cx="50" cy="58" r="36" fill="{C}"/><path d="M17 52 Q50 64 83 52 M16 66 Q50 78 84 66" stroke="#fff" stroke-width="3" opacity=".45" fill="none"/><ellipse cx="36" cy="42" rx="7" ry="12" fill="#fff" opacity=".35" transform="rotate(30 36 42)"/>`,
+  },
+  {
+    id: "firework",
+    name: "Firework",
+    defaultColor: "#d4a017",
+    tags: ["holiday", "anniversary", "birthday"],
+    svg: `<path d="M62.0 50.0 L90.0 50.0 M60.4 56.0 L84.6 70.0 M56.0 60.4 L70.0 84.6 M50.0 62.0 L50.0 90.0 M44.0 60.4 L30.0 84.6 M39.6 56.0 L15.4 70.0 M38.0 50.0 L10.0 50.0 M39.6 44.0 L15.4 30.0 M44.0 39.6 L30.0 15.4 M50.0 38.0 L50.0 10.0 M56.0 39.6 L70.0 15.4 M60.4 44.0 L84.6 30.0" stroke="{C}" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="94.4" cy="61.9" r="2.5" fill="{C}"/><circle cx="82.5" cy="82.5" r="2.5" fill="{C}"/><circle cx="61.9" cy="94.4" r="2.5" fill="{C}"/><circle cx="38.1" cy="94.4" r="2.5" fill="{C}"/><circle cx="17.5" cy="82.5" r="2.5" fill="{C}"/><circle cx="5.6" cy="61.9" r="2.5" fill="{C}"/><circle cx="5.6" cy="38.1" r="2.5" fill="{C}"/><circle cx="17.5" cy="17.5" r="2.5" fill="{C}"/><circle cx="38.1" cy="5.6" r="2.5" fill="{C}"/><circle cx="61.9" cy="5.6" r="2.5" fill="{C}"/><circle cx="82.5" cy="17.5" r="2.5" fill="{C}"/><circle cx="94.4" cy="38.1" r="2.5" fill="{C}"/><circle cx="50" cy="50" r="5" fill="{C}"/>`,
+  },
+  {
+    id: "bone",
+    name: "Bone",
+    defaultColor: "#d7b98e",
+    tags: ["family", "pets"],
+    svg: `<g fill="{C}"><rect x="24" y="42" width="52" height="16" rx="4"/><circle cx="22" cy="40" r="10"/><circle cx="22" cy="60" r="10"/><circle cx="78" cy="40" r="10"/><circle cx="78" cy="60" r="10"/></g>`,
+  },
+  {
+    id: "candle",
+    name: "Candle",
+    defaultColor: "#efe6d8",
+    tags: ["memorial", "holiday"],
+    svg: `<rect x="38" y="40" width="24" height="50" rx="3" fill="{C}" stroke="#c9bba6" stroke-width="1.5"/><rect x="30" y="88" width="40" height="6" rx="3" fill="#a1887f"/><path d="M50 8 C58 20 60 28 50 36 C40 28 42 20 50 8 Z" fill="#ffb300"/><path d="M50 18 C54 25 54 29 50 33 C46 29 46 25 50 18 Z" fill="#fff3c4"/><path d="M50 36 V41" stroke="#3e2723" stroke-width="2"/>`,
+  },
 ];
 
 export function stickerById(id: string) {

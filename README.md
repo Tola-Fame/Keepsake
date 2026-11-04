@@ -4,16 +4,19 @@ A website for making photo albums: birthdays, weddings, vacations, babies, gradu
 
 **Setting it up? Read [SETUP-GUIDE.md](SETUP-GUIDE.md).** It's a step-by-step guide with no coding.
 
+Planned features (including free and paid versions) are in [ROADMAP.md](ROADMAP.md).
+
 ## Features
 
-- 13 templates across 9 occasions, each with its own colors, fonts, frames and stickers
+- 24 templates across 10 occasions, each with its own colors, fonts, frames and stickers
 - Drag-and-drop editor: 17 page layouts; move, resize, rotate and crop photos; undo/redo
-- Text with 11 fonts, 26 stickers, shapes, solid/gradient/pattern backgrounds
+- Text with 11 fonts, 31 stickers, shapes, solid/gradient/pattern backgrounds
 - Photo filters: black & white, sepia, brightness, contrast
 - Page sizes: 8×8, 10×10, 12×12 in, US Letter and A4 (portrait or landscape)
 - Export: 300 DPI PDF, JPG page images (zip), or print from the browser
 - No account needed: albums are saved in the browser (IndexedDB)
 - With an account (Google or email link): albums saved online, share links, guest photo uploads, viewer PDF download
+- Help & FAQ page, privacy policy and terms pages
 - Works on phones, tablets and desktops
 
 ## How it runs

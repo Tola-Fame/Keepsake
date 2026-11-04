@@ -23,6 +23,9 @@ export default function Header() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
         <Logo />
         <nav className="flex items-center gap-1 sm:gap-2">
+          <Link href="/faq" className="btn-ghost hidden md:inline-flex">
+            Help
+          </Link>
           <Link href="/albums" className="btn-ghost hidden sm:inline-flex">
             My albums
           </Link>

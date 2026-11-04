@@ -38,8 +38,10 @@ export default function TemplateShowcase({ variant }: { variant: "hero" | "grid"
       </div>
     );
   }
-  const shown = TEMPLATES.filter((t) => t.id !== "blank");
+  const FEATURED = ["confetti-party", "butterfly-garden", "ivory-gold", "sage-blush", "sunny-escape", "retro-postcard", "little-one", "cap-and-gown", "midnight-gold", "family-moments", "furry-friends", "winter-wonderland"];
+  const shown = FEATURED.map((id) => templateById(id));
   return (
+    <>
     <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
       {shown.map((t) => (
         <Link key={t.id} href={`/new?template=${t.id}`} className="group">
@@ -49,5 +51,11 @@ export default function TemplateShowcase({ variant }: { variant: "hero" | "grid"
         </Link>
       ))}
     </div>
+    <div className="mt-8 text-center">
+      <Link href="/new" className="btn-secondary">
+        See all {TEMPLATES.length} templates
+      </Link>
+    </div>
+    </>
   );
 }

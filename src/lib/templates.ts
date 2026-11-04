@@ -13,9 +13,13 @@ export interface Theme {
   body: string;
   photo: PhotoStyle;
   stickers: string[];
+  /** Card color for the "card" cover style. */
+  panel?: string;
+  /** Sticker color override (for dark backgrounds). */
+  stickerColor?: string;
 }
 
-export type CoverStyle = "polaroid" | "framed" | "photo-top" | "full-bleed" | "title-only";
+export type CoverStyle = "polaroid" | "framed" | "photo-top" | "full-bleed" | "card" | "title-only";
 
 export interface Template {
   id: string;
@@ -30,7 +34,7 @@ export interface Template {
   subtitlePlaceholder: string;
 }
 
-export type Occasion = "birthday" | "wedding" | "vacation" | "baby" | "graduation" | "anniversary" | "family" | "holiday" | "other";
+export type Occasion = "birthday" | "wedding" | "vacation" | "baby" | "graduation" | "anniversary" | "family" | "holiday" | "memorial" | "other";
 
 export const OCCASIONS: { id: Occasion; label: string }[] = [
   { id: "birthday", label: "Birthday" },
@@ -41,6 +45,7 @@ export const OCCASIONS: { id: Occasion; label: string }[] = [
   { id: "anniversary", label: "Anniversary" },
   { id: "family", label: "Family" },
   { id: "holiday", label: "Holidays" },
+  { id: "memorial", label: "Memorial" },
   { id: "other", label: "Simple & blank" },
 ];
 
@@ -206,6 +211,7 @@ export const TEMPLATES: Template[] = [
       body: "Montserrat",
       photo: { borderWidth: 6, borderColor: "#d4a017", cornerRadius: 0, shadow: false },
       stickers: ["grad-cap", "diploma", "star"],
+      stickerColor: "#d4a017",
     },
     cover: "photo-top",
     pages: ["two-side", "single-caption", "four-feature", "three-row", "single-caption"],
@@ -277,6 +283,246 @@ export const TEMPLATES: Template[] = [
     subtitlePlaceholder: "With love from our family",
   },
   {
+    id: "butterfly-garden",
+    name: "Butterfly Garden",
+    occasion: "birthday",
+    description: "Lilac and magenta with fluttering butterflies.",
+    theme: {
+      background: { type: "color", color: "#fffafd" },
+      coverBackground: { type: "gradient", from: "#f1e4fb", to: "#fffafd", angle: 180 },
+      text: "#7a2a85",
+      accent: "#c026a3",
+      heading: "Great Vibes",
+      headingStyle: "normal",
+      body: "Cormorant Garamond",
+      photo: { borderWidth: 8, borderColor: "#ffffff", cornerRadius: 6, shadow: true },
+      stickers: ["butterfly", "flower", "sparkle"],
+    },
+    cover: "framed",
+    pages: ["single-caption", "two-side", "three-left", "collage-3", "four-grid", "single-caption"],
+    phrases: ["Spread your wings", "Another beautiful year", "Bloom & grow", "Celebrating you"],
+    titlePlaceholder: "Happy 28th, Tola",
+    subtitlePlaceholder: "July 20, 2026",
+  },
+  {
+    id: "bold-pop",
+    name: "Bold Pop",
+    occasion: "birthday",
+    description: "Big numbers and bright, punchy colors.",
+    theme: {
+      background: { type: "color", color: "#f7dbe7" },
+      text: "#b0123f",
+      accent: "#f28b4b",
+      heading: "Bebas Neue",
+      headingStyle: "normal",
+      body: "Montserrat",
+      photo: { borderWidth: 0, borderColor: "#ffffff", cornerRadius: 0, shadow: false },
+      stickers: ["sparkle", "star", "firework"],
+    },
+    cover: "photo-top",
+    pages: ["two-feature", "three-top", "single-caption", "four-feature", "two-side"],
+    phrases: ["LET'S PARTY", "BEST NIGHT EVER", "GOOD VIBES", "CHEERS"],
+    titlePlaceholder: "HELLO 30",
+    subtitlePlaceholder: "The big birthday bash",
+  },
+  {
+    id: "sage-blush",
+    name: "Sage & Blush",
+    occasion: "wedding",
+    description: "Soft sage greens with a blush pink touch.",
+    theme: {
+      background: { type: "color", color: "#f6f3ee" },
+      coverBackground: { type: "color", color: "#f4e3de" },
+      text: "#4f5d4a",
+      accent: "#c98f86",
+      heading: "Playfair Display",
+      headingStyle: "italic",
+      body: "Montserrat",
+      photo: { borderWidth: 0, borderColor: "#ffffff", cornerRadius: 0, shadow: false },
+      stickers: ["branch", "flower"],
+    },
+    cover: "framed",
+    pages: ["single", "two-side", "three-top", "single-caption", "four-feature", "two-stack", "single-caption"],
+    phrases: ["The beginning of forever", "Hand in hand", "Our people", "Just married"],
+    titlePlaceholder: "Ada & Tunde",
+    subtitlePlaceholder: "September 12, 2026",
+  },
+  {
+    id: "midnight-gold",
+    name: "Midnight Gold",
+    occasion: "anniversary",
+    description: "Black and gold for elegant celebrations.",
+    theme: {
+      background: { type: "color", color: "#141414" },
+      coverBackground: { type: "gradient", from: "#0b0b0b", to: "#2a2416", angle: 135 },
+      text: "#d9b45a",
+      accent: "#d9b45a",
+      heading: "Cormorant Garamond",
+      headingStyle: "bold",
+      body: "Montserrat",
+      photo: { borderWidth: 3, borderColor: "#d9b45a", cornerRadius: 0, shadow: false },
+      stickers: ["sparkle", "firework"],
+      stickerColor: "#d9b45a",
+    },
+    cover: "framed",
+    pages: ["single-caption", "two-side", "three-left", "four-grid", "single-caption"],
+    phrases: ["A toast to us", "Golden moments", "Here's to the years", "Still the one"],
+    titlePlaceholder: "10 Golden Years",
+    subtitlePlaceholder: "2016 – 2026",
+  },
+  {
+    id: "retro-postcard",
+    name: "Retro Postcard",
+    occasion: "vacation",
+    description: "Navy stripes and cream, like a vintage postcard.",
+    theme: {
+      background: { type: "color", color: "#fdf6e3" },
+      coverBackground: { type: "pattern", pattern: "stripes", color: "#1f2b5b", bg: "#f2d9b3" },
+      panel: "#fdf6e3",
+      text: "#1f2b5b",
+      accent: "#e3a33b",
+      heading: "Pacifico",
+      headingStyle: "normal",
+      body: "Caveat",
+      photo: { borderWidth: 10, borderColor: "#1f2b5b", cornerRadius: 14, shadow: false },
+      stickers: ["star", "airplane", "map-pin", "sun"],
+    },
+    cover: "card",
+    pages: ["two-stack", "single-caption", "three-left", "collage-3", "four-grid", "single-caption"],
+    phrases: ["Greetings from paradise", "Wish you were here", "Off we go!", "Postcards & memories"],
+    titlePlaceholder: "Greetings from Lagos",
+    subtitlePlaceholder: "Summer 2026",
+  },
+  {
+    id: "little-adventurer",
+    name: "Little Adventurer",
+    occasion: "baby",
+    description: "Sky blue and sunshine for a little explorer.",
+    theme: {
+      background: { type: "color", color: "#eef6fc" },
+      coverBackground: { type: "pattern", pattern: "dots", color: "#cfe5f5", bg: "#eef6fc" },
+      text: "#2f4b6e",
+      accent: "#f2b705",
+      heading: "Amatic SC",
+      headingStyle: "bold",
+      body: "Lora",
+      photo: { borderWidth: 8, borderColor: "#ffffff", cornerRadius: 18, shadow: false },
+      stickers: ["airplane", "sun", "star", "footprints"],
+    },
+    cover: "polaroid",
+    pages: ["single-caption", "two-side", "three-top", "four-grid", "single-caption", "six-grid"],
+    phrases: ["The adventure begins", "First steps", "Little explorer", "Big dreams"],
+    titlePlaceholder: "HELLO, BABY NOAH",
+    subtitlePlaceholder: "Born May 5, 2026",
+  },
+  {
+    id: "cap-and-gown",
+    name: "Cap & Gown",
+    occasion: "graduation",
+    description: "Emerald green and gold, classic and proud.",
+    theme: {
+      background: { type: "color", color: "#0f3b2e" },
+      text: "#f5efdc",
+      accent: "#d4a017",
+      heading: "Playfair Display",
+      headingStyle: "bold",
+      body: "Montserrat",
+      photo: { borderWidth: 4, borderColor: "#d4a017", cornerRadius: 0, shadow: false },
+      stickers: ["grad-cap", "star", "sparkle"],
+      stickerColor: "#d4a017",
+    },
+    cover: "framed",
+    pages: ["single-caption", "two-side", "three-left", "four-feature", "single-caption"],
+    phrases: ["Hard work pays off", "The journey", "Proud of you", "What's next?"],
+    titlePlaceholder: "Congratulations, Graduate",
+    subtitlePlaceholder: "Class of 2026",
+  },
+  {
+    id: "winter-wonderland",
+    name: "Winter Wonderland",
+    occasion: "holiday",
+    description: "Icy blues and snowflakes for the cold season.",
+    theme: {
+      background: { type: "gradient", from: "#e8f1fa", to: "#ffffff", angle: 180 },
+      coverBackground: { type: "pattern", pattern: "dots", color: "#d5e5f4", bg: "#f2f7fc" },
+      text: "#23415f",
+      accent: "#7fa7cf",
+      heading: "Cormorant Garamond",
+      headingStyle: "italic bold",
+      body: "Lora",
+      photo: { borderWidth: 10, borderColor: "#ffffff", cornerRadius: 4, shadow: true },
+      stickers: ["snowflake", "bauble", "tree"],
+    },
+    cover: "polaroid",
+    pages: ["two-side", "single-caption", "three-top", "four-grid", "single-caption"],
+    phrases: ["Let it snow", "Warm hearts, cold days", "Cozy season", "Winter magic"],
+    titlePlaceholder: "Winter 2026",
+    subtitlePlaceholder: "Snow days & cocoa",
+  },
+  {
+    id: "loving-memory",
+    name: "In Loving Memory",
+    occasion: "memorial",
+    description: "Quiet, gentle pages to honor a life.",
+    theme: {
+      background: { type: "color", color: "#f5f3ef" },
+      text: "#3b3b3b",
+      accent: "#a8a29e",
+      heading: "Cormorant Garamond",
+      headingStyle: "italic",
+      body: "Lora",
+      photo: { borderWidth: 2, borderColor: "#a8a29e", cornerRadius: 0, shadow: false },
+      stickers: ["branch", "candle"],
+    },
+    cover: "framed",
+    pages: ["single-caption", "two-side", "single", "three-left", "single-caption"],
+    phrases: ["Forever in our hearts", "A life well lived", "Remembering you", "Always loved"],
+    titlePlaceholder: "In Loving Memory",
+    subtitlePlaceholder: "1948 – 2026",
+  },
+  {
+    id: "furry-friends",
+    name: "Furry Friends",
+    occasion: "family",
+    description: "Playful pages for your pets.",
+    theme: {
+      background: { type: "pattern", pattern: "dots", color: "#f3dfb8", bg: "#fffaf0" },
+      text: "#5b3a1e",
+      accent: "#e07a3f",
+      heading: "Pacifico",
+      headingStyle: "normal",
+      body: "Montserrat",
+      photo: { borderWidth: 10, borderColor: "#ffffff", cornerRadius: 20, shadow: true },
+      stickers: ["paw", "bone", "heart"],
+    },
+    cover: "polaroid",
+    pages: ["two-side", "single-caption", "three-top", "collage-4", "single-caption"],
+    phrases: ["Good boy!", "Best friends", "Nap time", "Who's a good girl?"],
+    titlePlaceholder: "Life with Max",
+    subtitlePlaceholder: "Our furry best friend",
+  },
+  {
+    id: "year-in-review",
+    name: "Year in Review",
+    occasion: "family",
+    description: "Clean, modern pages for a whole year.",
+    theme: {
+      background: { type: "color", color: "#ffffff" },
+      text: "#1f1b16",
+      accent: "#c2593b",
+      heading: "Bebas Neue",
+      headingStyle: "normal",
+      body: "Inter",
+      photo: { borderWidth: 0, borderColor: "#ffffff", cornerRadius: 0, shadow: false },
+      stickers: [],
+    },
+    cover: "photo-top",
+    pages: ["single-caption", "four-grid", "single-caption", "six-grid", "single-caption", "four-feature", "single-caption", "nine-grid"],
+    phrases: ["WINTER", "SPRING", "SUMMER", "AUTUMN", "UNTIL NEXT YEAR"],
+    titlePlaceholder: "OUR 2026",
+    subtitlePlaceholder: "A year of little moments",
+  },
+  {
     id: "simply-white",
     name: "Simply White",
     occasion: "other",
@@ -324,7 +570,16 @@ export function templateById(id: string) {
   return TEMPLATES.find((t) => t.id === id) ?? TEMPLATES[TEMPLATES.length - 1];
 }
 
+// Rough average character width as a share of font size, used to keep cover titles on one line.
+const CHAR_WIDTH: Record<string, number> = { "Bebas Neue": 0.4, "Amatic SC": 0.38, "Great Vibes": 0.42, "Dancing Script": 0.48, Pacifico: 0.62, Caveat: 0.42 };
+
+function fitFontSize(text: string, font: string, width: number, size: number) {
+  const ratio = CHAR_WIDTH[font] ?? 0.56;
+  return Math.min(size, width / Math.max(1, text.length * ratio));
+}
+
 function heading(theme: Theme, text: string, x: number, y: number, width: number, fontSize: number, fill = theme.text): TextEl {
+  fontSize = fitFontSize(text, theme.heading, width, fontSize);
   return newTextEl(
     { x, y, width, height: Math.round(fontSize * 1.3), rotation: 0 },
     { text, role: "heading", fontFamily: theme.heading, fontStyle: theme.headingStyle, fontSize: Math.round(fontSize), fill, align: "center" },
@@ -342,7 +597,7 @@ function sticker(theme: Theme, index: number, x: number, y: number, size: number
   const id = theme.stickers[index % Math.max(1, theme.stickers.length)];
   const def = stickerById(id);
   if (!def) return null;
-  const color = def.defaultColor;
+  const color = theme.stickerColor ?? def.defaultColor;
   return newStickerEl(id, color, { x, y, width: size, height: size, rotation });
 }
 
@@ -392,6 +647,22 @@ function buildCover(t: Template, w: number, h: number, title: string, subtitle: 
       els.push({ ...newShapeEl("rect", { x: 0, y: h - bh, width: w, height: bh, rotation: 0 }, { fill: "#000000" }), opacity: 0.38 });
       els.push(heading(th, title, w * 0.06, h - bh + bh * 0.16, w * 0.88, titleSize * 0.9, "#ffffff"));
       if (subtitle) els.push(body(th, subtitle, w * 0.1, h - bh + bh * 0.16 + titleSize * 1.25, w * 0.8, subSize, "#ffffff"));
+      break;
+    }
+    case "card": {
+      const inset = min * 0.07;
+      els.push({
+        ...newShapeEl("rect", { x: inset, y: inset, width: w - inset * 2, height: h - inset * 2, rotation: 0 }, { fill: th.panel ?? "#fffaf0", cornerRadius: min * 0.04 }),
+        opacity: 1,
+      });
+      const pw = w * 0.62;
+      const ph = h * 0.46;
+      els.push(newPhotoEl({ x: (w - pw) / 2, y: h * 0.14, width: pw, height: ph, rotation: -2 }, th.photo));
+      const ty = h * 0.14 + ph + h * 0.06;
+      els.push(heading(th, title, w * 0.12, ty, w * 0.76, titleSize * 0.95));
+      if (subtitle) els.push(body(th, subtitle, w * 0.14, ty + titleSize * 1.4, w * 0.72, subSize * 1.2));
+      els.push(sticker(th, 0, w * 0.74, h * 0.09, min * 0.12, 15));
+      els.push(sticker(th, 1, w * 0.1, h * 0.78, min * 0.12, -10));
       break;
     }
     case "title-only": {

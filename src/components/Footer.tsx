@@ -6,7 +6,10 @@ export default function Footer() {
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:items-center">
         <Logo className="text-base text-ink" />
-        <nav className="flex gap-5">
+        <nav className="flex flex-wrap gap-5">
+          <Link href="/faq" className="hover:text-ink hover:underline">
+            Help & FAQ
+          </Link>
           <Link href="/privacy" className="hover:text-ink hover:underline">
             Privacy policy
           </Link>
