@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { AlbumDoc, PhotoMap } from "@/lib/types";
-import { TEMPLATES, buildAlbumDoc, templateById } from "@/lib/templates";
+import { TEMPLATES, TRAVEL_BOOK_TEMPLATES, buildAlbumDoc, templateById } from "@/lib/templates";
 import { autoFill } from "@/lib/doc";
 import { samplePhotos } from "@/lib/samples";
 import PagePreview from "./canvas/PagePreview";
@@ -28,7 +28,18 @@ export function TemplateCover({ templateId, className = "" }: { templateId: stri
   );
 }
 
-export default function TemplateShowcase({ variant }: { variant: "hero" | "grid" }) {
+export default function TemplateShowcase({ variant }: { variant: "hero" | "grid" | "travel" }) {
+  if (variant === "travel") {
+    return (
+      <div className="flex items-end justify-center gap-3">
+        {TRAVEL_BOOK_TEMPLATES.slice(0, 4).map((id, i) => (
+          <Link key={id} href="/trip" className={`w-1/4 transition hover:-translate-y-2 ${i % 2 ? "rotate-2" : "-rotate-2"}`} aria-label={`${templateById(id).name} travel book`}>
+            <TemplateCover templateId={id} className="rounded-l-sm rounded-r-md shadow-lg" />
+          </Link>
+        ))}
+      </div>
+    );
+  }
   if (variant === "hero") {
     return (
       <div className="relative mx-auto aspect-[5/4] w-full max-w-md">

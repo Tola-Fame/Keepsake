@@ -35,8 +35,8 @@ export default function Home() {
               <Link href="/new" className="btn-primary px-6 py-3 text-base">
                 Start an album
               </Link>
-              <Link href="/albums" className="btn-secondary px-6 py-3 text-base">
-                My albums
+              <Link href="/trip" className="btn-secondary px-6 py-3 text-base">
+                Make a travel book
               </Link>
             </div>
             <p className="mt-4 text-sm text-muted">Free to use. No account needed to start.</p>
@@ -55,6 +55,24 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 pt-16" aria-labelledby="travel-title">
+          <div className="grid items-center gap-10 overflow-hidden rounded-3xl bg-[#fbeee6] p-8 sm:p-12 md:grid-cols-2">
+            <div>
+              <p className="mb-3 inline-block rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-dark">New · Travel books</p>
+              <h2 id="travel-title" className="font-display text-3xl font-bold sm:text-4xl">
+                Every trip, its own book.
+              </h2>
+              <p className="mt-3 max-w-md text-muted">
+                Drop in your trip photos and we sort them into days and lay out every page. Pick a pastel cover, then keep your books together on your own bookshelf.
+              </p>
+              <Link href="/trip" className="btn-primary mt-6 px-6 py-3 text-base">
+                Make a travel book
+              </Link>
+            </div>
+            <TemplateShowcase variant="travel" />
           </div>
         </section>
 

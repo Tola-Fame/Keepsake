@@ -26,8 +26,11 @@ export default function Header() {
           <Link href="/faq" className="btn-ghost hidden md:inline-flex">
             Help
           </Link>
+          <Link href="/trip" className="btn-ghost hidden md:inline-flex">
+            Travel book
+          </Link>
           <Link href="/albums" className="btn-ghost hidden sm:inline-flex">
-            My albums
+            Bookshelf
           </Link>
           <Link href="/new" className="btn-primary px-4">
             <Plus className="h-4 w-4" aria-hidden />
@@ -49,7 +52,7 @@ export default function Header() {
                   <div className="absolute right-0 mt-2 w-56 rounded-xl border border-line bg-white p-2 shadow-lg" onMouseLeave={() => setOpen(false)}>
                     <p className="truncate px-3 py-2 text-xs text-muted">{user.email}</p>
                     <Link href="/albums" className="block rounded-lg px-3 py-2 text-sm hover:bg-paper" onClick={() => setOpen(false)}>
-                      My albums
+                      My bookshelf
                     </Link>
                     <form action={signOutAction}>
                       <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-paper">

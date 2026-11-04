@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Check, Cloud, HardDrive, Loader2 } from "lucide-react";
@@ -54,6 +55,12 @@ export default function NewAlbum() {
     <main className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
       <h1 className="font-display text-3xl font-bold sm:text-4xl">Start a new album</h1>
       <p className="mt-2 text-muted">Choose a design. You can change everything later.</p>
+      <p className="mt-4 rounded-xl bg-accent-soft px-4 py-3 text-sm">
+        Making a book from a trip?{" "}
+        <Link href="/trip" className="font-semibold text-accent-dark hover:underline">
+          Drop in your photos and we&apos;ll lay it out day by day →
+        </Link>
+      </p>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_380px]">
         <section>
