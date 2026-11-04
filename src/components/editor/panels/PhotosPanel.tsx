@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { AlertCircle, Check, ImagePlus, Loader2, Trash2, Wand2 } from "lucide-react";
 import type { EditorApi } from "../api";
 import { autoFill, usedPhotoIds } from "@/lib/doc";
+import GooglePhotosButton from "@/components/GooglePhotosButton";
 
 export default function PhotosPanel({ ed }: { ed: EditorApi }) {
   const input = useRef<HTMLInputElement>(null);
@@ -38,6 +39,7 @@ export default function PhotosPanel({ ed }: { ed: EditorApi }) {
         <button className="btn-primary w-full" onClick={() => input.current?.click()}>
           <ImagePlus className="h-4 w-4" aria-hidden /> Upload photos
         </button>
+        <GooglePhotosButton className="btn-secondary mt-2 w-full" max={200} onPicked={(items) => ed.uploadFiles(items.map((i) => i.file))} />
         <p className="mt-2 text-xs text-muted">or drag photos here · JPG, PNG, WebP</p>
         <input
           ref={input}

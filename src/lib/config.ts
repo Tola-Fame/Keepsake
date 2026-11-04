@@ -83,10 +83,33 @@ export interface PublicConfig {
   google: boolean;
   email: boolean;
   blobMode: "token" | "oidc" | null;
+  /** Google OAuth client id, when the Google Photos button is turned on. */
+  googlePhotosClientId: string | null;
 }
 
 export function publicConfig(): PublicConfig {
-  return { cloud: cloudEnabled() && (googleEnabled() || emailEnabled()), google: googleEnabled(), email: emailEnabled(), blobMode: blobMode() };
+  return {
+    cloud: cloudEnabled() && (googleEnabled() || emailEnabled()),
+    google: googleEnabled(),
+    email: emailEnabled(),
+    blobMode: blobMode(),
+    googlePhotosClientId: googlePhotosEnabled() ? googleClientId() : null,
+  };
+}
+
+/** The Google Photos button needs the Google sign-in key plus GOOGLE_PHOTOS=on (see SETUP-GUIDE.md). */
+export function googlePhotosEnabled() {
+  return /^(on|true|1|yes)$/i.test(clean(process.env.GOOGLE_PHOTOS)) && Boolean(googleClientId());
+}
+
+/** Team members who can manage print orders and vendors (ADMIN_EMAILS, comma-separated). */
+export function isAdminEmail(email: string | null | undefined) {
+  if (!email) return false;
+  const admins = clean(process.env.ADMIN_EMAILS)
+    .split(/[,\s]+/)
+    .map((e) => e.toLowerCase())
+    .filter(Boolean);
+  return admins.includes(email.toLowerCase());
 }
 
 /** Google keys with stray spaces, quotes and line breaks from copy-paste removed. */

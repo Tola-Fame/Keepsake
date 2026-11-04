@@ -15,6 +15,7 @@ import { cloudStore } from "@/lib/store/cloud";
 import { useTemplatePreview } from "@/components/TemplateShowcase";
 import PagePreview from "@/components/canvas/PagePreview";
 import { useApp } from "@/components/AppProvider";
+import GooglePhotosButton from "@/components/GooglePhotosButton";
 
 interface Picked {
   key: string;
@@ -48,13 +49,14 @@ export default function TripBuilder() {
 
   useEffect(() => () => pickedRef.current.forEach((p) => URL.revokeObjectURL(p.url)), []);
 
-  async function addFiles(list: FileList | File[]) {
-    const files = Array.from(list).filter(isImage);
-    if (!files.length) return;
+  /** Adds photos; the date taken is read from each file unless it's already known (Google Photos). */
+  async function addFiles(list: FileList | File[] | { file: File; takenAt: number }[]) {
+    const items = Array.from(list as ArrayLike<File | { file: File; takenAt: number }>).map((x) => (x instanceof File ? { file: x, takenAt: undefined } : x)).filter((x) => isImage(x.file));
+    if (!items.length) return;
     setReading(true);
     setError("");
     const read = await Promise.all(
-      files.map(async (file) => ({ key: `${file.name}-${file.size}-${file.lastModified}`, file, takenAt: await photoTakenAt(file), url: URL.createObjectURL(file) })),
+      items.map(async ({ file, takenAt }) => ({ key: `${file.name}-${file.size}-${file.lastModified}`, file, takenAt: takenAt ?? (await photoTakenAt(file)), url: URL.createObjectURL(file) })),
     );
     const prev = pickedRef.current;
     const seen = new Set(prev.map((p) => p.key));
@@ -143,10 +145,15 @@ export default function TripBuilder() {
             <ImagePlus className="mx-auto h-8 w-8 text-accent" aria-hidden />
             <p className="mt-3 font-semibold">Drop your trip photos here</p>
             <p className="mt-1 text-sm text-muted">Up to {MAX_TRIP_PHOTOS} photos. JPG, PNG or WebP.</p>
-            <button className="btn-secondary mt-4" onClick={() => inputRef.current?.click()} disabled={busy || reading}>
-              {reading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
-              Choose photos
-            </button>
+            <div className="mt-4 flex flex-wrap items-start justify-center gap-2">
+              <button className="btn-secondary" onClick={() => inputRef.current?.click()} disabled={busy || reading}>
+                {reading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
+                Choose photos
+              </button>
+              <div>
+                <GooglePhotosButton onPicked={addFiles} max={MAX_TRIP_PHOTOS - picked.length} disabled={busy || reading} />
+              </div>
+            </div>
             <input
               ref={inputRef}
               type="file"
