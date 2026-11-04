@@ -81,7 +81,17 @@ export default async function SignIn({ searchParams }: { searchParams: Promise<R
                   </form>
                 )}
               </div>
-              <p className="mt-6 text-center text-xs text-muted">No password needed.</p>
+              <p className="mt-6 text-center text-xs text-muted">
+                No password needed. By signing in you agree to the{" "}
+                <Link href="/terms" className="underline">
+                  terms
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy" className="underline">
+                  privacy policy
+                </Link>
+                .
+              </p>
             </>
           )}
         </div>

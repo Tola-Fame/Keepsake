@@ -72,7 +72,14 @@ Nothing changes on the site yet. Continue to Part 3.
      (replace `YOUR-SITE.vercel.app` with your real address from Part 1)
    - Click **Create**.
 5. A box shows a **Client ID** and a **Client secret**. Keep this page open; you'll copy both in the next step.
-6. In the left menu, click **Audience** and click **Publish app**. Without this, only people you add as "test users" can sign in.
+6. In the left menu, click **Branding** and fill in:
+   - **Application home page:** `https://YOUR-SITE.vercel.app`
+   - **Application privacy policy link:** `https://YOUR-SITE.vercel.app/privacy`
+   - **Application terms of service link:** `https://YOUR-SITE.vercel.app/terms`
+   - **Authorized domains:** `YOUR-SITE.vercel.app`
+   - Leave **App logo** empty. Uploading a logo makes Google review your app first, which can take weeks.
+   - Click **Save**.
+7. In the left menu, click **Audience** and click **Publish app**. Without this, only people you add as "test users" can sign in.
 
 ### 3b. Give the key to your site
 
@@ -120,6 +127,10 @@ On Vercel, open the project → **Settings** → **Domains** → **Add**, and fo
 
 ---
 
+## Contact email on the Privacy and Terms pages (optional)
+
+The Privacy policy and Terms pages say people can contact "the site owner". To show your email address there instead, add an environment variable in Vercel (**Settings** → **Environment Variables**) with the key `CONTACT_EMAIL` and your email as the value, then redeploy.
+
 ## Printing tips
 
 - **At home:** use **Download → Print now**. In the print window, set the scale to **Actual size** or **100%**, set margins to **None**, and choose paper that matches the album size (Letter or A4 albums fit standard paper).
@@ -140,6 +151,7 @@ On Vercel, open the project → **Settings** → **Domains** → **Add**, and fo
 |---|---|
 | No "Sign in" button | Check that Blob storage and Neon are both connected (Part 2), at least one sign-in method is added (Part 3 or 4), and you redeployed. |
 | Google says "redirect_uri_mismatch" | The address in Google's **Authorized redirect URIs** must match your site exactly, starting with `https://` and ending with `/api/auth/callback/google`. |
-| Google says "Access blocked" or only you can sign in | Publish the app (Part 3a, step 6). |
+| Google says "Access blocked" or only you can sign in | Publish the app (Part 3a, step 7). |
+| Google won't let you publish ("branding incomplete") | Fill in the Branding page (Part 3a, step 6) and click Save. |
 | Sign-in emails don't arrive | Check that the domain shows **Verified** in Resend and that `AUTH_EMAIL_FROM` uses that domain. Check the spam folder. |
 | Photo uploads fail after signing in | Make sure the Blob store was created with **Public** access. If it's private, delete it and create a new public one (Part 2a), then redeploy. |
