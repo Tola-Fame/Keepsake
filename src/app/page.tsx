@@ -58,6 +58,30 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="mx-auto max-w-4xl px-4 pt-16 text-center" aria-labelledby="demo-title">
+          <h2 id="demo-title" className="font-display text-3xl font-bold sm:text-4xl">
+            See how it works
+          </h2>
+          <p className="mt-2 text-muted">A two-minute tour, from choosing a template to downloading your album.</p>
+          <div className="mt-8 overflow-hidden rounded-2xl border border-line bg-white shadow-xl">
+            <video
+              className="block aspect-video w-full bg-paper"
+              controls
+              playsInline
+              preload="none"
+              poster="/demo/keepsake-demo-poster.jpg"
+              aria-label="Demo video: how to make a photo album with Keepsake"
+            >
+              <source src="/demo/keepsake-demo.mp4" type="video/mp4" />
+              Your browser can&apos;t play this video.{" "}
+              <a href="/demo/keepsake-demo.mp4" className="font-semibold text-accent underline">
+                Download it instead
+              </a>
+              .
+            </video>
+          </div>
+        </section>
+
         <section className="mx-auto max-w-6xl px-4 py-16">
           <h2 className="font-display text-3xl font-bold sm:text-4xl">Templates for every occasion</h2>
           <p className="mt-2 text-muted">Every template can be changed: colors, fonts, layouts and stickers.</p>

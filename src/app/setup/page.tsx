@@ -104,6 +104,8 @@ export default async function Setup({ searchParams }: { searchParams: Promise<{ 
       else problems.push("AUTH_GOOGLE_ID doesn't look like a Google Client ID. It should be numbers, a dash, letters, and end with .apps.googleusercontent.com.");
     }
     if (/\.apps\.googleusercontent\.com$/i.test(gsecret)) problems.push("AUTH_GOOGLE_SECRET contains the Client ID. Swap the two values.");
+    else if (!/^GOCSPX-/.test(gsecret))
+      problems.push("AUTH_GOOGLE_SECRET doesn't look like a Google Client secret (they start with GOCSPX-). In Google Cloud, open your client, click Add secret, and paste the new secret into AUTH_GOOGLE_SECRET in Vercel.");
     if (rawId !== gid) problems.push("AUTH_GOOGLE_ID had extra spaces or quotes around it. The site now removes them automatically, but you may want to fix the value in Vercel.");
     google = {
       title: "Google sign-in",
