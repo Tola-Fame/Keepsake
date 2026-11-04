@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { del } from "@vercel/blob";
-import { blobToken } from "@/lib/config";
+import { blobAuth } from "@/lib/config";
 import { currentUser } from "@/auth";
 import { getDb, schema } from "@/db";
 import { getAlbumPhotos, getOwnedAlbum, toAlbum } from "@/lib/server/albums";
@@ -61,7 +61,7 @@ export async function DELETE(_req: Request, { params }: Ctx) {
   if (!album) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const photos = await getAlbumPhotos(id);
   const urls = photos.flatMap((p) => [p.url, p.thumbUrl]);
-  if (urls.length) await del(urls, { token: blobToken() }).catch(() => undefined);
+  if (urls.length) await del(urls, blobAuth()).catch(() => undefined);
   await getDb().delete(schema.albums).where(eq(schema.albums.id, id));
   return NextResponse.json({ ok: true });
 }

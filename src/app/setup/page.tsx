@@ -5,7 +5,7 @@ import { del, put } from "@vercel/blob";
 import Link from "next/link";
 import { CheckCircle2, CircleAlert, CircleMinus } from "lucide-react";
 import Header from "@/components/Header";
-import { blobToken, findBlobToken, findDatabaseUrl, publicConfig } from "@/lib/config";
+import { blobAuth, blobMode, findBlobStoreId, findBlobToken, findDatabaseUrl, publicConfig } from "@/lib/config";
 import { getDb } from "@/db";
 
 export const metadata: Metadata = { title: "Setup check", robots: { index: false } };
@@ -42,7 +42,7 @@ async function databaseCheck(): Promise<Check> {
 }
 
 async function storageCheck(test: boolean): Promise<Check> {
-  const found = findBlobToken();
+  const found = findBlobToken() ?? findBlobStoreId();
   if (!found)
     return {
       title: "Photo storage (Blob)",
@@ -55,7 +55,7 @@ async function storageCheck(test: boolean): Promise<Check> {
       status: "ok",
       detail: (
         <>
-          Connected (setting: {found.name}).{" "}
+          Connected (setting: {found.name}{blobMode() === "oidc" ? ", automatic sign-in" : ""}).{" "}
           <Link href="/setup?test=1" className="font-semibold text-accent underline">
             Test that photos can be saved
           </Link>
@@ -63,8 +63,8 @@ async function storageCheck(test: boolean): Promise<Check> {
       ),
     };
   try {
-    const blob = await put(`setup-check/test-${Date.now()}.txt`, "ok", { access: "public", token: blobToken(), addRandomSuffix: true });
-    await del(blob.url, { token: blobToken() }).catch(() => undefined);
+    const blob = await put(`setup-check/test-${Date.now()}.txt`, "ok", { access: "public", ...blobAuth(), addRandomSuffix: true });
+    await del(blob.url, blobAuth()).catch(() => undefined);
     return { title: "Photo storage (Blob)", status: "ok", detail: `Connected and working (setting: ${found.name}). A test file was saved and deleted.` };
   } catch (e) {
     const msg = (e as Error).message || "";

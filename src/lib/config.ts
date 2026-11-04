@@ -25,11 +25,39 @@ export function findBlobToken(): { name: string; value: string } | null {
   return null;
 }
 
+/**
+ * Newer Vercel Blob stores are connected without a token: Vercel adds BLOB_STORE_ID and
+ * the site signs in to storage automatically (OIDC). A custom prefix gives e.g. PHOTOS_STORE_ID.
+ */
+export function findBlobStoreId(): { name: string; value: string } | null {
+  const env = process.env;
+  if (env.BLOB_STORE_ID) return { name: "BLOB_STORE_ID", value: env.BLOB_STORE_ID };
+  for (const [name, value] of Object.entries(env)) {
+    if (value && /_STORE_ID$/.test(name) && /^store_/i.test(value)) return { name, value };
+  }
+  return null;
+}
+
 export const databaseUrl = () => findDatabaseUrl()?.value;
 export const blobToken = () => findBlobToken()?.value;
 
+/** "token" = classic read-write token; "oidc" = store id + automatic Vercel sign-in. */
+export function blobMode(): "token" | "oidc" | null {
+  if (blobToken()) return "token";
+  if (findBlobStoreId()) return "oidc";
+  return null;
+}
+
+/** Credentials to pass to every @vercel/blob server call. */
+export function blobAuth(): { token?: string; storeId?: string } {
+  const token = blobToken();
+  if (token) return { token };
+  const storeId = findBlobStoreId()?.value;
+  return storeId ? { storeId } : {};
+}
+
 export function cloudEnabled() {
-  return Boolean(databaseUrl() && blobToken());
+  return Boolean(databaseUrl() && blobMode());
 }
 
 /**
@@ -39,7 +67,7 @@ export function cloudEnabled() {
 export function authSecret() {
   if (process.env.AUTH_SECRET) return process.env.AUTH_SECRET;
   if (!cloudEnabled()) return undefined;
-  return createHash("sha256").update(`keepsake-auth|${databaseUrl()}|${blobToken()}`).digest("base64url");
+  return createHash("sha256").update(`keepsake-auth|${databaseUrl()}|${blobToken() ?? findBlobStoreId()?.value}`).digest("base64url");
 }
 
 export function googleEnabled() {
@@ -54,8 +82,9 @@ export interface PublicConfig {
   cloud: boolean;
   google: boolean;
   email: boolean;
+  blobMode: "token" | "oidc" | null;
 }
 
 export function publicConfig(): PublicConfig {
-  return { cloud: cloudEnabled() && (googleEnabled() || emailEnabled()), google: googleEnabled(), email: emailEnabled() };
+  return { cloud: cloudEnabled() && (googleEnabled() || emailEnabled()), google: googleEnabled(), email: emailEnabled(), blobMode: blobMode() };
 }

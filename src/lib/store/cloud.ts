@@ -1,7 +1,15 @@
 // Cloud storage client: talks to this site's API and uploads photos straight to Vercel Blob.
-import { upload } from "@vercel/blob/client";
+import { upload as uploadWithToken, uploadPresigned, type UploadOptions } from "@vercel/blob/client";
 import type { Album, AlbumDoc, AlbumSummary, Photo } from "../types";
 import { processImage } from "../image";
+
+// Set from the server config: "oidc" stores (no read-write token) need presigned uploads.
+let blobMode: "token" | "oidc" | null = "token";
+export function setBlobMode(mode: "token" | "oidc" | null) {
+  blobMode = mode;
+}
+const upload = (pathname: string, body: Blob, options: UploadOptions) =>
+  blobMode === "oidc" ? uploadPresigned(pathname, body, options) : uploadWithToken(pathname, body, options);
 
 async function api<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, { ...init, headers: { "content-type": "application/json", ...(init?.headers || {}) } });
