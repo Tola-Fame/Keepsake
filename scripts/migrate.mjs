@@ -1,10 +1,21 @@
-// Applies database migrations during the build when DATABASE_URL is set.
+// Applies database migrations during the build when a database is connected.
 // Skips when no database is configured (browser-only mode).
 import { existsSync } from "node:fs";
 
-const url = process.env.DATABASE_URL;
+// Same lookup as src/lib/config.ts: DATABASE_URL, POSTGRES_URL, or a prefixed name.
+function findDatabaseUrl() {
+  const env = process.env;
+  if (env.DATABASE_URL) return env.DATABASE_URL;
+  if (env.POSTGRES_URL) return env.POSTGRES_URL;
+  for (const [name, value] of Object.entries(env)) {
+    if (value && /(_DATABASE_URL|_POSTGRES_URL)$/.test(name) && /^postgres(ql)?:\/\//.test(value)) return value;
+  }
+  return undefined;
+}
+
+const url = findDatabaseUrl();
 if (!url) {
-  console.log("[migrate] DATABASE_URL not set: skipping migrations (browser-only mode).");
+  console.log("[migrate] No database connected: skipping migrations (browser-only mode).");
   process.exit(0);
 }
 if (!existsSync("./drizzle/meta/_journal.json")) {

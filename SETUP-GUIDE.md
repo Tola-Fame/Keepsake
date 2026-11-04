@@ -147,6 +147,8 @@ The Privacy policy and Terms pages say people can contact "the site owner". To s
 
 ## If something goes wrong
 
+**First, open your site's setup check page:** `https://YOUR-SITE.vercel.app/setup`. It shows which parts are connected and what to fix, without showing any passwords or keys.
+
 | What you see | What to do |
 |---|---|
 | No "Sign in" button | Check that Blob storage and Neon are both connected (Part 2), at least one sign-in method is added (Part 3 or 4), and you redeployed. |

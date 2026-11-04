@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { count, eq } from "drizzle-orm";
 import { currentUser } from "@/auth";
+import { blobToken } from "@/lib/config";
 import { getDb, schema } from "@/db";
 import { IMAGE_TYPES, MAX_UPLOAD_BYTES, albumPrefix, getOwnedAlbum, getSharedAlbum } from "@/lib/server/albums";
 
@@ -14,6 +15,7 @@ export async function POST(req: Request) {
     const json = await handleUpload({
       body,
       request: req,
+      token: blobToken(),
       onBeforeGenerateToken: async (pathname, clientPayload) => {
         const payload = JSON.parse(clientPayload || "{}") as { albumId?: string; shareToken?: string };
         if (!payload.albumId) throw new Error("Missing album");

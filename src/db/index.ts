@@ -3,6 +3,7 @@ import { drizzle as drizzleNeon, type NeonHttpDatabase } from "drizzle-orm/neon-
 import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as schema from "./schema";
+import { databaseUrl } from "@/lib/config";
 
 type Db = NeonHttpDatabase<typeof schema>;
 let _db: Db | null = null;
@@ -13,8 +14,8 @@ export const isNeonUrl = (url: string) => /\.neon\.tech|neon\.build/i.test(url);
 /** Database client. Works with Neon (HTTP) and any standard Postgres (TCP). */
 export function getDb(): Db {
   if (!_db) {
-    const url = process.env.DATABASE_URL;
-    if (!url) throw new Error("DATABASE_URL is not set");
+    const url = databaseUrl();
+    if (!url) throw new Error("No database is connected");
     if (isNeonUrl(url)) {
       _db = drizzleNeon(neon(url), { schema });
     } else {

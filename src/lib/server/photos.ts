@@ -1,5 +1,6 @@
 import "server-only";
 import { head } from "@vercel/blob";
+import { blobToken } from "@/lib/config";
 import { z } from "zod";
 import { getDb, schema } from "@/db";
 import { uid } from "@/lib/doc";
@@ -14,7 +15,7 @@ export const registerSchema = z.object({
 
 /** Confirms both files exist in this project's Blob store under the given folder, then saves the photo. */
 export async function registerPhoto(albumId: string, prefix: string, input: z.infer<typeof registerSchema>, uploadedBy: string | null) {
-  const [full, thumb] = await Promise.all([head(input.url).catch(() => null), head(input.thumbUrl).catch(() => null)]);
+  const [full, thumb] = await Promise.all([head(input.url, { token: blobToken() }).catch(() => null), head(input.thumbUrl, { token: blobToken() }).catch(() => null)]);
   if (!full || !thumb || !full.pathname.startsWith(prefix) || !thumb.pathname.startsWith(prefix)) {
     throw new Error("Upload could not be verified");
   }

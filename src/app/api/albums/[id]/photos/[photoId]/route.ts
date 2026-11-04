@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
 import { del } from "@vercel/blob";
+import { blobToken } from "@/lib/config";
 import { currentUser } from "@/auth";
 import { getDb, schema } from "@/db";
 import { getOwnedAlbum } from "@/lib/server/albums";
@@ -16,6 +17,6 @@ export async function DELETE(_req: Request, { params }: Ctx) {
     .delete(schema.photos)
     .where(and(eq(schema.photos.id, photoId), eq(schema.photos.albumId, id)))
     .returning();
-  if (row) await del([row.url, row.thumbUrl]).catch(() => undefined);
+  if (row) await del([row.url, row.thumbUrl], { token: blobToken() }).catch(() => undefined);
   return NextResponse.json({ ok: true });
 }
