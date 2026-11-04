@@ -1,6 +1,6 @@
 import { boolean, integer, jsonb, pgTable, primaryKey, text, timestamp, index } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
-import type { AlbumCover, AlbumDoc } from "@/lib/types";
+import type { AlbumCover, AlbumDoc, OrderBook, OrderStatus, ShippingAddress } from "@/lib/types";
 
 // ---- Auth.js tables ----
 export const users = pgTable("user", {
@@ -78,4 +78,57 @@ export const photos = pgTable(
     createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
   },
   (t) => [index("photo_album_idx").on(t.albumId)],
+);
+
+// ---- Print orders ----
+export const vendors = pgTable("vendor", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  name: text("name").notNull(),
+  contactName: text("contactName"),
+  email: text("email"),
+  phone: text("phone"),
+  website: text("website"),
+  notes: text("notes"),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const printOrders = pgTable(
+  "printOrder",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    number: integer("number").notNull().generatedAlwaysAsIdentity({ startWith: 1001 }),
+    userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+    // the album may be edited or deleted later; `book` keeps exactly what was ordered
+    albumId: text("albumId").references(() => albums.id, { onDelete: "set null" }),
+    title: text("title").notNull(),
+    book: jsonb("book").$type<OrderBook>().notNull(),
+    quantity: integer("quantity").notNull().default(1),
+    shipping: jsonb("shipping").$type<ShippingAddress>().notNull(),
+    customerNotes: text("customerNotes"),
+    status: text("status").$type<OrderStatus>().notNull().default("new"),
+    vendorId: text("vendorId").references(() => vendors.id, { onDelete: "set null" }),
+    price: text("price"),
+    trackingCarrier: text("trackingCarrier"),
+    trackingNumber: text("trackingNumber"),
+    trackingUrl: text("trackingUrl"),
+    adminNotes: text("adminNotes"),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [index("order_user_idx").on(t.userId), index("order_status_idx").on(t.status), index("order_album_idx").on(t.albumId)],
+);
+
+/** Order history shown to the team (and status changes shown to the customer). */
+export const orderEvents = pgTable(
+  "orderEvent",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    orderId: text("orderId").notNull().references(() => printOrders.id, { onDelete: "cascade" }),
+    status: text("status").$type<OrderStatus>(),
+    message: text("message").notNull(),
+    actor: text("actor").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [index("order_event_order_idx").on(t.orderId)],
 );

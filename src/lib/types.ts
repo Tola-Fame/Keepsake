@@ -124,3 +124,26 @@ export interface AlbumSummary {
   pageCount: number;
   updatedAt: number;
 }
+
+// ---- Print orders ----
+
+export type OrderStatus = "new" | "confirmed" | "printing" | "shipped" | "delivered" | "cancelled";
+
+export interface ShippingAddress {
+  name: string;
+  email: string;
+  phone: string;
+  line1: string;
+  line2: string;
+  city: string;
+  region: string;
+  postalCode: string;
+  country: string;
+}
+
+/** Frozen copy of the book as it was when ordered. */
+export interface OrderBook {
+  doc: AlbumDoc;
+  photos: Photo[];
+  cover: AlbumCover;
+}

@@ -11,6 +11,7 @@ import {
   CloudOff,
   Download,
   Eye,
+  Package,
   FileImage,
   FileText,
   Images,
@@ -73,7 +74,7 @@ function useIsDesktop() {
 
 export default function Editor({ album }: { album: Album }) {
   const router = useRouter();
-  const { config } = useApp();
+  const { config, user } = useApp();
   const store = storeFor(album.source);
   const history = useHistory<AlbumDoc>(album.doc);
   const doc = history.value;
@@ -433,17 +434,35 @@ export default function Editor({ album }: { album: Album }) {
     }
   }
 
-  async function moveToCloud() {
+  async function moveToCloud(then: "edit" | "order" = "edit") {
     setShareOpen(false);
     setMoving("Saving…");
     try {
       await store.save(album.id, { doc, title: title.trim() || "Untitled album", cover: docCover(doc, photos) });
       setSaveState("saved");
       const id = await moveLocalAlbumToCloud(album.id, (d, t) => setMoving(`Uploading photos ${d} of ${t}…`));
-      router.replace(`/edit/${id}`);
+      router.replace(then === "order" ? `/order/${id}` : `/edit/${id}`);
     } catch (e) {
       setMoving(null);
       notify(`Could not save to your account: ${(e as Error).message}`);
+    }
+  }
+
+  /** Printed copies need the book in the customer's account, so the team can open it. */
+  async function orderPrint() {
+    if (album.source === "cloud") {
+      setMoving("Saving…");
+      try {
+        await store.save(album.id, { doc, title: title.trim() || "Untitled album", cover: docCover(doc, photos) });
+        router.push(`/order/${album.id}`);
+      } catch (e) {
+        setMoving(null);
+        notify(`Could not save your book: ${(e as Error).message}`);
+      }
+    } else if (!user) {
+      if (confirm("To order a printed copy, sign in first. Your book will be saved to your account so we can print it.")) router.push(`/signin?next=${encodeURIComponent(`/edit/local/${album.id}`)}`);
+    } else if (confirm("We'll save this book to your account first, so our printing team can open it. Continue?")) {
+      moveToCloud("order");
     }
   }
 
@@ -524,6 +543,11 @@ export default function Editor({ album }: { album: Album }) {
           <button className="btn-ghost hidden sm:inline-flex" onClick={() => setPreview(true)}>
             <Eye className="h-4 w-4" aria-hidden /> Preview
           </button>
+          {config.cloud && (
+            <button className="btn-ghost" onClick={orderPrint} aria-label="Order a printed copy">
+              <Package className="h-4 w-4" aria-hidden /> <span className="hidden lg:inline">Order print</span>
+            </button>
+          )}
           {(config.cloud || album.source === "cloud") && (
             <button className="btn-ghost" onClick={() => setShareOpen(true)} aria-label="Share">
               <Share2 className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">Share</span>
@@ -729,7 +753,7 @@ export default function Editor({ album }: { album: Album }) {
         </div>
       )}
 
-      {shareOpen && <ShareDialog album={album} settings={share} onChange={(s) => setShare({ shareToken: s.shareToken ?? null, shareEnabled: !!s.shareEnabled, allowGuestUploads: !!s.allowGuestUploads, allowDownload: s.allowDownload ?? true })} onClose={() => setShareOpen(false)} onMoveToCloud={moveToCloud} />}
+      {shareOpen && <ShareDialog album={album} settings={share} onChange={(s) => setShare({ shareToken: s.shareToken ?? null, shareEnabled: !!s.shareEnabled, allowGuestUploads: !!s.allowGuestUploads, allowDownload: s.allowDownload ?? true })} onClose={() => setShareOpen(false)} onMoveToCloud={() => moveToCloud()} />}
     </div>
   );
 }

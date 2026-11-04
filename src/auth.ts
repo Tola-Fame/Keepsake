@@ -2,7 +2,7 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { authSecret, cloudEnabled, emailEnabled, googleClientId, googleClientSecret, googleEnabled } from "@/lib/config";
+import { authSecret, cloudEnabled, emailEnabled, googleClientId, googleClientSecret, googleEnabled, isAdminEmail } from "@/lib/config";
 import { getDb, schema } from "@/db";
 
 export const { handlers, auth: rawAuth, signIn, signOut } = NextAuth((): NextAuthConfig => {
@@ -44,7 +44,8 @@ export async function currentUser() {
   if (!cloudEnabled()) return null;
   try {
     const session = await rawAuth();
-    return session?.user?.id ? { id: session.user.id, name: session.user.name ?? null, email: session.user.email ?? null, image: session.user.image ?? null } : null;
+    const u = session?.user;
+    return u?.id ? { id: u.id, name: u.name ?? null, email: u.email ?? null, image: u.image ?? null, isAdmin: isAdminEmail(u.email) } : null;
   } catch {
     return null;
   }

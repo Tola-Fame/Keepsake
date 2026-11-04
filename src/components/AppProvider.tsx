@@ -9,10 +9,11 @@ export interface SessionUser {
   name: string | null;
   email: string | null;
   image: string | null;
+  isAdmin: boolean;
 }
 
 const Ctx = createContext<{ config: PublicConfig; user: SessionUser | null }>({
-  config: { cloud: false, google: false, email: false, blobMode: null },
+  config: { cloud: false, google: false, email: false, blobMode: null, googlePhotosClientId: null },
   user: null,
 });
 

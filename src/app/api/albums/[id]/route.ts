@@ -8,6 +8,7 @@ import { currentUser } from "@/auth";
 import { getDb, schema } from "@/db";
 import { getAlbumPhotos, getOwnedAlbum, toAlbum } from "@/lib/server/albums";
 import { coverSchema, docSchema } from "@/lib/server/validation";
+import { hasOpenOrders } from "@/lib/server/orders";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -59,6 +60,7 @@ export async function DELETE(_req: Request, { params }: Ctx) {
   const { id } = await params;
   const album = await getOwnedAlbum(id, user.id);
   if (!album) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (await hasOpenOrders(id)) return NextResponse.json({ error: "This book has a print order in progress, so it can't be deleted until the order is delivered or cancelled." }, { status: 409 });
   const photos = await getAlbumPhotos(id);
   const urls = photos.flatMap((p) => [p.url, p.thumbUrl]);
   if (urls.length) await del(urls, blobAuth()).catch(() => undefined);
