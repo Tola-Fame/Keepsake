@@ -2,12 +2,12 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { authSecret, cloudEnabled, emailEnabled, googleEnabled } from "@/lib/config";
+import { authSecret, cloudEnabled, emailEnabled, googleClientId, googleClientSecret, googleEnabled } from "@/lib/config";
 import { getDb, schema } from "@/db";
 
 export const { handlers, auth: rawAuth, signIn, signOut } = NextAuth((): NextAuthConfig => {
   const providers: NextAuthConfig["providers"] = [];
-  if (googleEnabled()) providers.push(Google({ allowDangerousEmailAccountLinking: true }));
+  if (googleEnabled()) providers.push(Google({ clientId: googleClientId(), clientSecret: googleClientSecret(), allowDangerousEmailAccountLinking: true }));
   if (emailEnabled())
     providers.push(
       Resend({

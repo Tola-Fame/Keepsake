@@ -71,7 +71,7 @@ export function authSecret() {
 }
 
 export function googleEnabled() {
-  return cloudEnabled() && Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
+  return cloudEnabled() && Boolean(googleClientId() && googleClientSecret());
 }
 
 export function emailEnabled() {
@@ -88,3 +88,8 @@ export interface PublicConfig {
 export function publicConfig(): PublicConfig {
   return { cloud: cloudEnabled() && (googleEnabled() || emailEnabled()), google: googleEnabled(), email: emailEnabled(), blobMode: blobMode() };
 }
+
+/** Google keys with stray spaces, quotes and line breaks from copy-paste removed. */
+const clean = (v: string | undefined) => (v ?? "").trim().replace(/^["']|["']$/g, "").trim();
+export const googleClientId = () => clean(process.env.AUTH_GOOGLE_ID);
+export const googleClientSecret = () => clean(process.env.AUTH_GOOGLE_SECRET);

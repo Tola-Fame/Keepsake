@@ -5,7 +5,7 @@ import { del, put } from "@vercel/blob";
 import Link from "next/link";
 import { CheckCircle2, CircleAlert, CircleMinus } from "lucide-react";
 import Header from "@/components/Header";
-import { blobAuth, blobMode, findBlobStoreId, findBlobToken, findDatabaseUrl, publicConfig } from "@/lib/config";
+import { blobAuth, blobMode, findBlobStoreId, findBlobToken, findDatabaseUrl, googleClientId, googleClientSecret, publicConfig } from "@/lib/config";
 import { getDb } from "@/db";
 
 export const metadata: Metadata = { title: "Setup check", robots: { index: false } };
@@ -87,14 +87,35 @@ export default async function Setup({ searchParams }: { searchParams: Promise<{ 
   const vercelEnv = process.env.VERCEL_ENV;
 
   const [db, storage] = await Promise.all([databaseCheck(), storageCheck(test === "1")]);
-  const google: Check =
-    process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET
-      ? { title: "Google sign-in", status: "ok", detail: "Keys found." }
-      : {
-          title: "Google sign-in",
-          status: process.env.AUTH_RESEND_KEY ? "optional" : "missing",
-          detail: `${process.env.AUTH_GOOGLE_ID ? "AUTH_GOOGLE_SECRET is missing." : process.env.AUTH_GOOGLE_SECRET ? "AUTH_GOOGLE_ID is missing." : "AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET are not set."} Add them in Vercel → Settings → Environment Variables (Production), then redeploy. Check the names are spelled exactly like this.`,
-        };
+  const gid = googleClientId();
+  const gsecret = googleClientSecret();
+  const rawId = process.env.AUTH_GOOGLE_ID ?? "";
+  let google: Check;
+  if (!gid || !gsecret) {
+    google = {
+      title: "Google sign-in",
+      status: process.env.AUTH_RESEND_KEY ? "optional" : "missing",
+      detail: `${gid ? "AUTH_GOOGLE_SECRET is missing." : gsecret ? "AUTH_GOOGLE_ID is missing." : "AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET are not set."} Add them in Vercel → Settings → Environment Variables (Production), then redeploy. Check the names are spelled exactly like this.`,
+    };
+  } else {
+    const problems: string[] = [];
+    if (!/^\d+-[a-z0-9]+\.apps\.googleusercontent\.com$/i.test(gid)) {
+      if (/^GOCSPX-/i.test(gid)) problems.push("AUTH_GOOGLE_ID contains the Client secret, not the Client ID. Swap the two values.");
+      else problems.push("AUTH_GOOGLE_ID doesn't look like a Google Client ID. It should be numbers, a dash, letters, and end with .apps.googleusercontent.com.");
+    }
+    if (/\.apps\.googleusercontent\.com$/i.test(gsecret)) problems.push("AUTH_GOOGLE_SECRET contains the Client ID. Swap the two values.");
+    if (rawId !== gid) problems.push("AUTH_GOOGLE_ID had extra spaces or quotes around it. The site now removes them automatically, but you may want to fix the value in Vercel.");
+    google = {
+      title: "Google sign-in",
+      status: problems.some((p) => !p.startsWith("AUTH_GOOGLE_ID had")) ? "error" : "ok",
+      detail: (
+        <>
+          {problems.length ? problems.join(" ") + " " : "Keys found. "}
+          The Client ID in use is <code className="break-all rounded bg-paper px-1">{gid}</code>. It must match the Client ID shown in Google Cloud → Google Auth Platform → Clients, character for character.
+        </>
+      ),
+    };
+  }
   const email: Check = process.env.AUTH_RESEND_KEY
     ? { title: "Email sign-in (Resend)", status: "ok", detail: process.env.AUTH_EMAIL_FROM ? `Key found. Emails are sent from ${process.env.AUTH_EMAIL_FROM}.` : "Key found, but AUTH_EMAIL_FROM is not set, so emails can only reach your own Resend account email." }
     : { title: "Email sign-in (Resend)", status: "optional", detail: "Not set up (optional)." };
