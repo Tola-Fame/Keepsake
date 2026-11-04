@@ -1,16 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #faf7f2;
+  --color-paper: #fbf7f3;
   --color-card: #ffffff;
-  --color-ink: #1f1b16;
-  --color-muted: #6b6258;
-  --color-line: #e6dfd4;
-  --color-accent: #c2593b;
-  --color-accent-dark: #a2452b;
-  --color-accent-soft: #f6e4dc;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
+  --color-ink: #2e2b30;
+  --color-muted: #6e6870;
+  --color-line: #ece4dc;
+  --color-accent: #e2337a;
+  --color-accent-dark: #c41f63;
+  --color-accent-soft: #fde4ee;
+  --color-charcoal: #353234;
+  /* pastel book covers */
+  --color-peach: #fbd5c5;
+  --color-mint: #cdeedd;
+  --color-lilac: #e3d9f6;
+  --color-butter: #fff0b8;
+  --color-sky: #cfe6f8;
+  --color-rose: #f9d3df;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Nunito", ui-sans-serif, system-ui, sans-serif;
 }
 
 html, body {
@@ -23,23 +31,30 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.font-display {
+  letter-spacing: -0.015em;
+}
+
 @utility btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 bg-accent text-white hover:bg-accent-dark;
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition disabled:cursor-not-allowed disabled:opacity-50 bg-accent text-white hover:bg-accent-dark;
 }
 @utility btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 border border-line bg-white text-ink hover:border-ink/30;
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition disabled:cursor-not-allowed disabled:opacity-50 border border-line bg-white text-ink hover:border-ink/30;
+}
+@utility btn-dark {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition disabled:cursor-not-allowed disabled:opacity-50 bg-charcoal text-white hover:bg-black;
 }
 @utility btn-ghost {
   @apply inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 text-ink hover:bg-black/5;
 }
 @utility input {
-  @apply w-full rounded-lg border border-line bg-white px-3 py-2 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20;
+  @apply w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20;
 }
 @utility label {
-  @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-muted;
+  @apply mb-1 block text-xs font-bold uppercase tracking-wide text-muted;
 }
 @utility panel-title {
-  @apply mb-3 text-xs font-semibold uppercase tracking-wider text-muted;
+  @apply mb-3 text-xs font-bold uppercase tracking-wider text-muted;
 }
 
 input[type="range"] {

@@ -31,9 +31,9 @@ export function TemplateCover({ templateId, className = "" }: { templateId: stri
 export default function TemplateShowcase({ variant }: { variant: "hero" | "grid" | "travel" }) {
   if (variant === "travel") {
     return (
-      <div className="flex items-end justify-center gap-3">
-        {TRAVEL_BOOK_TEMPLATES.slice(0, 4).map((id, i) => (
-          <Link key={id} href="/trip" className={`w-1/4 transition hover:-translate-y-2 ${i % 2 ? "rotate-2" : "-rotate-2"}`} aria-label={`${templateById(id).name} travel book`}>
+      <div className="flex items-end justify-center gap-3 px-2">
+        {TRAVEL_BOOK_TEMPLATES.slice(0, 4).map((id) => (
+          <Link key={id} href="/trip" className="w-1/4 transition hover:-translate-y-2" aria-label={`${templateById(id).name} travel book`}>
             <TemplateCover templateId={id} className="rounded-l-sm rounded-r-md shadow-lg" />
           </Link>
         ))}
@@ -43,9 +43,9 @@ export default function TemplateShowcase({ variant }: { variant: "hero" | "grid"
   if (variant === "hero") {
     return (
       <div className="relative mx-auto aspect-[5/4] w-full max-w-md">
-        <TemplateCover templateId="sunny-escape" className="absolute left-0 top-10 w-[52%] -rotate-6" />
-        <TemplateCover templateId="confetti-party" className="absolute right-0 top-4 w-[52%] rotate-6" />
-        <TemplateCover templateId="ivory-gold" className="absolute left-1/2 top-0 z-10 w-[58%] -translate-x-1/2" />
+        <TemplateCover templateId="sky-atlas" className="absolute left-0 top-10 w-[52%] -rotate-6 rounded-l-sm rounded-r-lg shadow-2xl" />
+        <TemplateCover templateId="peach-passport" className="absolute right-0 top-4 w-[52%] rotate-6 rounded-l-sm rounded-r-lg shadow-2xl" />
+        <TemplateCover templateId="mint-coast" className="absolute left-1/2 top-0 z-10 w-[58%] -translate-x-1/2 rounded-l-sm rounded-r-lg shadow-2xl" />
       </div>
     );
   }

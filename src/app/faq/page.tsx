@@ -38,6 +38,10 @@ const sections: { title: string; items: QA[] }[] = [
     title: "Photos & editing",
     items: [
       {
+        q: "Can I add photos from Google Photos or Apple Photos?",
+        a: "Yes. On a phone, tap Choose photos: iPhones open your Photos library (including iCloud) and Android phones open your gallery, including Google Photos. On a computer, use the Google Photos button if you see it, or download photos from iCloud first.",
+      },
+      {
         q: "Which photo types can I upload?",
         a: "JPG, PNG and WebP. Photos from iPhones are usually converted to JPG automatically when you pick them. If one won't open, save it as a JPG first. Large photos are resized to 3,000 pixels on the longest side, which is enough for sharp prints.",
       },
@@ -56,6 +60,23 @@ const sections: { title: string; items: QA[] }[] = [
       {
         q: "I made a mistake. Can I undo it?",
         a: "Yes. Use the undo and redo arrows at the top of the editor, or Ctrl+Z (Cmd+Z on Mac).",
+      },
+    ],
+  },
+  {
+    title: "Printed books",
+    items: [
+      {
+        q: "Can you print my book and send it to me?",
+        a: "Yes. Sign in, open your book and click Order print. Enter how many copies you want and where to send them. There's nothing to pay online: we email you the price and delivery time to confirm before we print.",
+      },
+      {
+        q: "How do I track my order?",
+        a: "Open My orders from the menu. Each order shows where it is (confirmed, printing, shipped, delivered) and the tracking number once it ships.",
+      },
+      {
+        q: "Can I change my book after ordering?",
+        a: "Changes you make after ordering don't affect that order, which is printed exactly as it was when you ordered. To print the new version, place a new order. You can cancel an order yourself on My orders until we confirm it.",
       },
     ],
   },

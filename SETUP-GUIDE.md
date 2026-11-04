@@ -10,6 +10,8 @@ The guide has four parts:
 | 2. Add storage | A place to keep photos and albums online. | 5 min |
 | 3. Google sign-in | People can sign in with Google. Albums are saved online and can be shared, and guests can add photos. | 10–15 min |
 | 4. Email sign-in (optional) | People can sign in with a link sent to their email. | 15 min + waiting |
+| 5. Google Photos button (optional) | People can add photos straight from Google Photos. Needs Part 3. | 10 min |
+| 6. Print orders and your team | Customers can order printed books. Your team manages orders and vendors at `/admin`. Needs Parts 2 and 3 (or 4). | 5 min |
 
 Parts 2 and 3 work together. "Sign in" only appears on the site once storage **and** at least one sign-in method (Google or email) are set up.
 
@@ -118,6 +120,44 @@ To send sign-in emails to **anyone**, you need your own web domain (for example 
 
 ---
 
+## Part 5 (optional): Google Photos button
+
+This adds a **Google Photos** button next to "Choose photos". It uses the same Google key as Part 3. Phones don't need it, because their photo picker already includes Google Photos, but it saves computer users from downloading photos first.
+
+1. Go to **https://console.cloud.google.com** and select your **Keepsake** project.
+2. In the search bar at the top, type **Photos Picker API**, open it and click **Enable**.
+3. Open **APIs & Services** → **Credentials** and click your Keepsake key (OAuth client).
+4. Under **Authorized JavaScript origins**, click **Add URI** and enter your site address, e.g. `https://keepsake-xxxx.vercel.app` (no slash at the end). Add your own domain too if you have one. Click **Save**.
+5. Open **Google Auth Platform** → **Data access** (it may be called **OAuth consent screen** → **Scopes**). Click **Add or remove scopes**, search for `photospicker.mediaitems.readonly`, tick it, click **Update**, then **Save**.
+6. In Vercel, open your project → **Settings** → **Environment Variables**. Add the key `GOOGLE_PHOTOS` with the value `on`, then redeploy.
+
+Good to know: until Google reviews your app, people see a "Google hasn't verified this app" warning when they connect Google Photos. To remove it, go to **Google Auth Platform** → **Verification centre** and submit the app for verification. Google may take a few days.
+
+---
+
+## Part 6: Print orders and your team
+
+Customers can order printed copies of any book saved to their account. There's no online payment yet: your team confirms the price and delivery time with the customer by email before printing.
+
+**Give your team access:**
+
+1. In Vercel, open your project → **Settings** → **Environment Variables**.
+2. Add the key `ADMIN_EMAILS`. For the value, enter the email addresses of everyone on your team, separated by commas, e.g. `ada@yourcompany.com, tunde@yourcompany.com`. Each person must sign in with exactly that email.
+3. Redeploy.
+
+**Every day:**
+
+1. Sign in and click **Team** in the menu (or go to `/admin`).
+2. **Vendors:** add each print partner once: name, contact details and notes such as prices, turnaround and the countries they ship to.
+3. **Orders:** new orders appear with the status **New**. Open one to see the book, the shipping address and the customer's note.
+4. Email the customer the price. Then set the status to **Confirmed**, type the price into **Price** and click **Save changes**. The customer sees the price on their **My orders** page.
+5. Choose a vendor under **Vendor**. Click **Print PDF (300 DPI)** to download the print file and send it to the vendor along with the shipping address.
+6. Update the status as the vendor reports back: **Printing**, then **Shipped** (add the carrier and tracking number), then **Delivered**.
+
+Each change is recorded in the order's **History**, with who made it and when. Customers can cancel an order themselves only while it's still **New**. While an order is open, the customer can't delete that book, and its photos are kept even if the customer removes them from the book, so the print file always works.
+
+---
+
 ## Using your own web address (optional)
 
 On Vercel, open the project → **Settings** → **Domains** → **Add**, and follow the instructions. If you do this after Part 3, also add the new address to Google:
@@ -156,4 +196,7 @@ The Privacy policy and Terms pages say people can contact "the site owner". To s
 | Google says "Access blocked" or only you can sign in | Publish the app (Part 3a, step 7). |
 | Google won't let you publish ("branding incomplete") | Fill in the Branding page (Part 3a, step 6) and click Save. |
 | Sign-in emails don't arrive | Check that the domain shows **Verified** in Resend and that `AUTH_EMAIL_FROM` uses that domain. Check the spam folder. |
+| No **Google Photos** button | Check that Google sign-in works (Part 3), `GOOGLE_PHOTOS` is set to `on`, and you redeployed. |
+| Google Photos says "This app is blocked" or shows an error about origins | Add your site address under **Authorized JavaScript origins** (Part 5, step 4) and enable the Photos Picker API (Part 5, step 2). |
+| "This page is for the Keepsake team" at `/admin` | Add that person's email to `ADMIN_EMAILS` (Part 6) and redeploy. The email must match the one they sign in with. |
 | Photo uploads fail after signing in | Make sure the Blob store was created with **Public** access. If it's private, delete it and create a new public one (Part 2a), then redeploy. |
