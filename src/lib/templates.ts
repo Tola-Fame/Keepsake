@@ -19,7 +19,7 @@ export interface Theme {
   stickerColor?: string;
 }
 
-export type CoverStyle = "polaroid" | "framed" | "photo-top" | "full-bleed" | "card" | "title-only";
+export type CoverStyle = "polaroid" | "framed" | "photo-top" | "full-bleed" | "card" | "title-only" | "journal";
 
 export interface Template {
   id: string;
@@ -48,6 +48,42 @@ export const OCCASIONS: { id: Occasion; label: string }[] = [
   { id: "memorial", label: "Memorial" },
   { id: "other", label: "Simple & blank" },
 ];
+
+/** A pastel travel book: solid pastel cover, soft tinted pages and bold lettering. */
+function pastelTrip(
+  id: string,
+  name: string,
+  description: string,
+  colors: { cover: string; page: string; text: string; accent: string },
+  fonts: { heading: string; headingStyle: TextEl["fontStyle"]; body: string },
+  stickers: string[],
+  titlePlaceholder: string,
+  subtitlePlaceholder: string,
+): Template {
+  return {
+    id,
+    name,
+    occasion: "vacation",
+    description,
+    theme: {
+      background: { type: "color", color: colors.page },
+      coverBackground: { type: "color", color: colors.cover },
+      text: colors.text,
+      accent: colors.accent,
+      ...fonts,
+      photo: { borderWidth: 12, borderColor: "#ffffff", cornerRadius: 10, shadow: true },
+      stickers,
+    },
+    cover: "journal",
+    pages: ["single-caption", "two-side", "three-left", "four-grid", "collage-3", "single-caption"],
+    phrases: ["Day one", "Wish you were here", "Somewhere new", "Off we go", "Golden hour"],
+    titlePlaceholder,
+    subtitlePlaceholder,
+  };
+}
+
+/** Pastel travel books, offered first when making a book from trip photos. */
+export const TRAVEL_BOOK_TEMPLATES = ["peach-passport", "mint-coast", "lilac-postcards", "butter-days", "sky-atlas", "rose-petals"];
 
 export const TEMPLATES: Template[] = [
   {
@@ -522,6 +558,12 @@ export const TEMPLATES: Template[] = [
     titlePlaceholder: "OUR 2026",
     subtitlePlaceholder: "A year of little moments",
   },
+  pastelTrip("peach-passport", "Peach Passport", "Soft peach cover with bold travel lettering.", { cover: "#fbd5c5", page: "#fff7f2", text: "#6b2f22", accent: "#e5785c" }, { heading: "Bebas Neue", headingStyle: "normal", body: "Montserrat" }, ["airplane", "map-pin", "sun", "camera"], "SEVILLE 2026", "Spain · March"),
+  pastelTrip("mint-coast", "Mint Coast", "Fresh mint green for sea and sunshine.", { cover: "#cdeedd", page: "#f6fcf8", text: "#1f4d3f", accent: "#3fa37c" }, { heading: "Pacifico", headingStyle: "normal", body: "Montserrat" }, ["wave", "palm", "sun", "camera"], "Amalfi Coast", "June 2026"),
+  pastelTrip("lilac-postcards", "Lilac Postcards", "Lavender cover with elegant serif type.", { cover: "#e3d9f6", page: "#fbf9ff", text: "#3f3260", accent: "#8a6cc9" }, { heading: "Playfair Display", headingStyle: "bold", body: "Lora" }, ["star", "airplane", "flower", "camera"], "Paris", "Spring 2026"),
+  pastelTrip("butter-days", "Butter Days", "Buttery yellow with handwritten notes.", { cover: "#fff0b8", page: "#fffcf0", text: "#5a4410", accent: "#d99a1a" }, { heading: "Amatic SC", headingStyle: "bold", body: "Caveat" }, ["sun", "palm", "camera", "map-pin"], "SUMMER IN LISBON", "August 2026"),
+  pastelTrip("sky-atlas", "Sky Atlas", "Powder blue, like a clear-sky flight.", { cover: "#cfe6f8", page: "#f7fbff", text: "#1d3d5c", accent: "#4b8fd1" }, { heading: "Bebas Neue", headingStyle: "normal", body: "Inter" }, ["airplane", "map-pin", "wave", "star"], "CROATIA", "Split · Hvar · Dubrovnik"),
+  pastelTrip("rose-petals", "Rose Petals", "Blush pink with a flowing script.", { cover: "#f9d3df", page: "#fff8fa", text: "#5b2236", accent: "#d6608a" }, { heading: "Dancing Script", headingStyle: "bold", body: "Lora" }, ["heart", "flower", "camera", "airplane"], "Kyoto", "Cherry blossom season"),
   {
     id: "simply-white",
     name: "Simply White",
@@ -593,7 +635,7 @@ function body(theme: Theme, text: string, x: number, y: number, width: number, f
   );
 }
 
-function sticker(theme: Theme, index: number, x: number, y: number, size: number, rotation = 0) {
+export function sticker(theme: Theme, index: number, x: number, y: number, size: number, rotation = 0) {
   const id = theme.stickers[index % Math.max(1, theme.stickers.length)];
   const def = stickerById(id);
   if (!def) return null;
@@ -601,7 +643,7 @@ function sticker(theme: Theme, index: number, x: number, y: number, size: number
   return newStickerEl(id, color, { x, y, width: size, height: size, rotation });
 }
 
-function buildCover(t: Template, w: number, h: number, title: string, subtitle: string): AlbumElement[] {
+export function buildCover(t: Template, w: number, h: number, title: string, subtitle: string): AlbumElement[] {
   const th = t.theme;
   const min = Math.min(w, h);
   const els: (AlbumElement | null)[] = [];
@@ -663,6 +705,16 @@ function buildCover(t: Template, w: number, h: number, title: string, subtitle: 
       if (subtitle) els.push(body(th, subtitle, w * 0.14, ty + titleSize * 1.4, w * 0.72, subSize * 1.2));
       els.push(sticker(th, 0, w * 0.74, h * 0.09, min * 0.12, 15));
       els.push(sticker(th, 1, w * 0.1, h * 0.78, min * 0.12, -10));
+      break;
+    }
+    case "journal": {
+      els.push(heading(th, title, w * 0.08, h * 0.07, w * 0.84, titleSize * 1.15));
+      if (subtitle) els.push(body(th, subtitle, w * 0.1, h * 0.07 + titleSize * 1.6, w * 0.8, subSize));
+      const pw = w * 0.72;
+      const ph = h * 0.56;
+      const py = h - ph - h * 0.09;
+      els.push(newPhotoEl({ x: (w - pw) / 2, y: py, width: pw, height: ph, rotation: 0 }, th.photo));
+      els.push(sticker(th, 0, w * 0.05, h - min * 0.24, min * 0.17, -12));
       break;
     }
     case "title-only": {
