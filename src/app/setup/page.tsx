@@ -113,7 +113,8 @@ export default async function Setup({ searchParams }: { searchParams: Promise<{ 
       detail: (
         <>
           {problems.length ? problems.join(" ") + " " : "Keys found. "}
-          The Client ID in use is <code className="break-all rounded bg-paper px-1">{gid}</code>. It must match the Client ID shown in Google Cloud → Google Auth Platform → Clients, character for character.
+          The Client ID in use is <code className="break-all rounded bg-paper px-1">{gid}</code>. It must match the Client ID shown in Google Cloud → Google Auth Platform → Clients, character for character.{" "}
+          The Client secret in use ends in <code className="rounded bg-paper px-1">{gsecret.slice(-4)}</code>. Google shows the end of each secret (for example ****{gsecret.slice(-4)}) under Client secrets; one of them must end the same way.
         </>
       ),
     };
