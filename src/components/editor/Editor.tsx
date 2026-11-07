@@ -544,7 +544,7 @@ export default function Editor({ album }: { album: Album }) {
             <Eye className="h-4 w-4" aria-hidden /> Preview
           </button>
           {config.cloud && (
-            <button className="btn-ghost" onClick={orderPrint} aria-label="Order a printed copy">
+            <button className="btn-ghost hidden sm:inline-flex" onClick={orderPrint} aria-label="Order a printed copy">
               <Package className="h-4 w-4" aria-hidden /> <span className="hidden lg:inline">Order print</span>
             </button>
           )}
@@ -560,7 +560,7 @@ export default function Editor({ album }: { album: Album }) {
             {menu && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setMenu(false)} />
-                <div className="absolute right-0 z-50 mt-2 w-72 rounded-xl border border-line bg-white p-2 shadow-xl" role="menu">
+                <div className="absolute right-0 z-50 mt-2 w-72 max-w-[calc(100vw-1rem)] rounded-xl border border-line bg-white p-2 shadow-xl" role="menu">
                   <button className="flex w-full items-start gap-3 rounded-lg p-3 text-left hover:bg-paper" onClick={() => runExport("pdf")} role="menuitem">
                     <FileText className="mt-0.5 h-5 w-5 text-accent" aria-hidden />
                     <span>
@@ -575,6 +575,22 @@ export default function Editor({ album }: { album: Album }) {
                       <span className="block text-xs text-muted">Every page as a picture, in one zip file.</span>
                     </span>
                   </button>
+                  {config.cloud && (
+                    <button
+                      className="flex w-full items-start gap-3 rounded-lg p-3 text-left hover:bg-paper sm:hidden"
+                      onClick={() => {
+                        setMenu(false);
+                        orderPrint();
+                      }}
+                      role="menuitem"
+                    >
+                      <Package className="mt-0.5 h-5 w-5 text-accent" aria-hidden />
+                      <span>
+                        <span className="block text-sm font-semibold">Order a printed book</span>
+                        <span className="block text-xs text-muted">We print it and ship it to your door.</span>
+                      </span>
+                    </button>
+                  )}
                   <button className="flex w-full items-start gap-3 rounded-lg p-3 text-left hover:bg-paper" onClick={() => runExport("print")} role="menuitem">
                     <Printer className="mt-0.5 h-5 w-5 text-accent" aria-hidden />
                     <span>
@@ -589,7 +605,7 @@ export default function Editor({ album }: { album: Album }) {
         </div>
       </header>
 
-      <div className="relative flex min-h-0 flex-1">
+      <div className="relative flex min-h-0 flex-1 flex-col lg:flex-row">
         {/* tool rail (desktop) */}
         <nav className="hidden w-[76px] shrink-0 flex-col items-center gap-1 border-r border-line bg-white py-2 lg:flex" aria-label="Tools">
           {PANELS.map((p) => (
@@ -606,10 +622,10 @@ export default function Editor({ album }: { album: Album }) {
 
         {/* tool panel */}
         {showPanel && (
-          <aside className="absolute inset-x-0 bottom-0 z-20 max-h-[55%] overflow-y-auto rounded-t-2xl border-t border-line bg-white p-4 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] lg:static lg:max-h-none lg:w-80 lg:shrink-0 lg:rounded-none lg:border-r lg:border-t-0 lg:shadow-none">
-            <div className="mb-3 flex items-center justify-between lg:hidden">
+          <aside className="order-2 h-[46dvh] shrink-0 overflow-y-auto overscroll-contain rounded-t-2xl border-t border-line bg-white p-4 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] lg:order-none lg:h-auto lg:shrink-0 lg:rounded-none lg:border-t-0 lg:shadow-none lg:w-80 lg:border-r">
+            <div className="sticky -top-4 z-10 -mx-4 -mt-4 mb-3 flex items-center justify-between bg-white px-4 pb-2 pt-3 lg:hidden">
               <h2 className="font-semibold">{PANELS.find((p) => p.id === panel)?.label}</h2>
-              <button onClick={() => setPanel(null)} className="rounded-full p-1 hover:bg-paper" aria-label="Close panel">
+              <button onClick={() => setPanel(null)} className="-mr-2 rounded-full p-2.5 hover:bg-paper" aria-label="Close panel">
                 <X className="h-5 w-5" aria-hidden />
               </button>
             </div>
@@ -618,7 +634,7 @@ export default function Editor({ album }: { album: Album }) {
         )}
 
         {/* canvas */}
-        <div ref={canvasArea} className="relative min-w-0 flex-1 overflow-auto bg-[#ebe5dc]" onDragOver={(e) => e.preventDefault()} onDrop={onCanvasDrop}>
+        <div ref={canvasArea} className="relative order-1 min-h-0 min-w-0 flex-1 overflow-auto bg-[#ebe5dc] lg:order-none" onDragOver={(e) => e.preventDefault()} onDrop={onCanvasDrop}>
           <div className="flex min-h-full min-w-full items-center justify-center" style={{ padding: pad / 2 }} onMouseDown={(e) => e.target === e.currentTarget && setSelectedId(null)}>
             {scale > 0 && (
               <div className="relative shadow-xl" style={{ width: Math.round(pageW * scale), height: Math.round(pageH * scale) }}>
@@ -679,7 +695,7 @@ export default function Editor({ album }: { album: Album }) {
               <IconButton label="Zoom out" onClick={() => setZoom((z) => Math.max(0.5, +(z - 0.25).toFixed(2)))}>
                 <Minus className="h-4 w-4" />
               </IconButton>
-              <button className="w-12 text-xs font-semibold" onClick={() => setZoom(1)} title="Fit to screen">
+              <button className="h-9 w-12 text-xs font-semibold" onClick={() => setZoom(1)} title="Fit to screen">
                 {Math.round(zoom * 100)}%
               </button>
               <IconButton label="Zoom in" onClick={() => setZoom((z) => Math.min(3, +(z + 0.25).toFixed(2)))}>
@@ -691,16 +707,20 @@ export default function Editor({ album }: { album: Album }) {
 
         {/* properties */}
         {showProps && selected && (
-          <aside className="absolute inset-x-0 bottom-0 z-20 max-h-[55%] overflow-y-auto rounded-t-2xl border-t border-line bg-white p-4 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] lg:static lg:max-h-none lg:w-72 lg:shrink-0 lg:rounded-none lg:border-l lg:border-t-0 lg:shadow-none">
+          <aside className="order-2 h-[46dvh] shrink-0 overflow-y-auto overscroll-contain rounded-t-2xl border-t border-line bg-white p-4 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] lg:order-none lg:h-auto lg:shrink-0 lg:rounded-none lg:border-t-0 lg:shadow-none lg:w-72 lg:border-l">
+            <div className="sticky -top-4 z-10 -mx-4 -mt-4 mb-1 flex justify-end bg-white px-4 pt-2 lg:hidden">
+              <button className="rounded-full px-3 py-2 text-sm font-semibold text-accent-dark hover:bg-paper" onClick={() => setSelectedId(null)}>
+                Done
+              </button>
+            </div>
             <Properties ed={ed} el={selected} onDelete={deleteSelected} onDuplicate={duplicateSelected} onArrange={arrange} />
-            <button className="btn-secondary mt-4 w-full lg:hidden" onClick={() => setSelectedId(null)}>
-              Done
-            </button>
           </aside>
         )}
       </div>
 
-      <PageStrip doc={doc} photos={photoMap} index={safeIndex} onSelect={setPageIndex} onAdd={() => addPage()} onDuplicate={duplicatePage} onDelete={deletePage} onMove={movePage} />
+      <div className={showPanel || showProps ? "hidden lg:block" : undefined}>
+        <PageStrip doc={doc} photos={photoMap} index={safeIndex} onSelect={setPageIndex} onAdd={() => addPage()} onDuplicate={duplicatePage} onDelete={deletePage} onMove={movePage} />
+      </div>
 
       {/* tool rail (mobile) */}
       <nav className="flex shrink-0 justify-around border-t border-line bg-white pb-[env(safe-area-inset-bottom)] lg:hidden" aria-label="Tools">
@@ -747,7 +767,7 @@ export default function Editor({ album }: { album: Album }) {
           </div>
           <div className="flex flex-1 items-center justify-center text-white [&_p]:text-white/70">
             <div className="w-full max-w-5xl">
-              <AlbumViewer doc={doc} photos={photoMap} reserve={160} />
+              <AlbumViewer doc={doc} photos={photoMap} reserve={160} outsideArrows />
             </div>
           </div>
         </div>

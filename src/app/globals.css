@@ -59,4 +59,5 @@ body {
 
 input[type="range"] {
   accent-color: var(--color-accent);
+  min-height: 28px;
 }

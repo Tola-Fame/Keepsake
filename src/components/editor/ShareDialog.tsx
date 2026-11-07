@@ -49,7 +49,7 @@ export default function ShareDialog({
           <h2 id="share-title" className="font-display text-xl font-bold">
             Share album
           </h2>
-          <button onClick={onClose} className="rounded-full p-1 hover:bg-paper" aria-label="Close">
+          <button onClick={onClose} className="-mr-2 rounded-full p-2.5 hover:bg-paper" aria-label="Close">
             <X className="h-5 w-5" aria-hidden />
           </button>
         </div>

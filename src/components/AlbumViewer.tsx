@@ -7,7 +7,7 @@ import { pageDims } from "@/lib/pageSizes";
 import PagePreview from "./canvas/PagePreview";
 
 /** Page-by-page album viewer with arrows, keyboard and swipe navigation. */
-export default function AlbumViewer({ doc, photos, reserve = 220 }: { doc: AlbumDoc; photos: PhotoMap; reserve?: number }) {
+export default function AlbumViewer({ doc, photos, reserve = 220, outsideArrows = false }: { doc: AlbumDoc; photos: PhotoMap; reserve?: number; outsideArrows?: boolean }) {
   const [i, setI] = useState(0);
   const [touchX, setTouchX] = useState<number | null>(null);
   const { w, h } = pageDims(doc.size);
@@ -39,16 +39,18 @@ export default function AlbumViewer({ doc, photos, reserve = 220 }: { doc: Album
         <div className="overflow-hidden rounded-sm bg-white shadow-2xl ring-1 ring-black/5">
           <PagePreview key={doc.pages[i].id} doc={doc} page={doc.pages[i]} photos={photos} useThumbs={false} />
         </div>
-        <button onClick={() => go(-1)} disabled={i === 0} className="absolute left-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow disabled:opacity-0 sm:-left-14" aria-label="Previous page">
+        <button onClick={() => go(-1)} disabled={i === 0} className={`absolute left-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow disabled:opacity-0 ${outsideArrows ? "lg:-left-14" : ""}`} aria-label="Previous page">
           <ChevronLeft className="h-5 w-5" aria-hidden />
         </button>
-        <button onClick={() => go(1)} disabled={i === n - 1} className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow disabled:opacity-0 sm:-right-14" aria-label="Next page">
+        <button onClick={() => go(1)} disabled={i === n - 1} className={`absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow disabled:opacity-0 ${outsideArrows ? "lg:-right-14" : ""}`} aria-label="Next page">
           <ChevronRight className="h-5 w-5" aria-hidden />
         </button>
       </div>
-      <div className="mt-4 flex max-w-full flex-wrap justify-center gap-1.5">
+      <div className="mt-3 flex max-w-full flex-wrap justify-center">
         {doc.pages.map((p, k) => (
-          <button key={p.id} onClick={() => setI(k)} className={`h-2 rounded-full transition-all ${k === i ? "w-6 bg-accent" : "w-2 bg-ink/20"}`} aria-label={`Go to page ${k + 1}`} />
+          <button key={p.id} onClick={() => setI(k)} className="flex h-8 items-center px-2" aria-label={`Go to page ${k + 1}`} aria-current={k === i ? "page" : undefined}>
+            <span className={`block h-2 rounded-full transition-all ${k === i ? "w-6 bg-accent" : "w-2 bg-ink/20"}`} />
+          </button>
         ))}
       </div>
       <p className="mt-2 text-sm text-muted">

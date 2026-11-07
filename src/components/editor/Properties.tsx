@@ -46,7 +46,7 @@ function PhotoProps({ ed, el }: { ed: EditorApi; el: PhotoEl }) {
               {FILTER_PRESETS.map((p) => {
                 const active = JSON.stringify(p.f) === JSON.stringify(el.filters);
                 return (
-                  <button key={p.id} onClick={() => up({ filters: p.f })} className={`rounded-full border px-3 py-1 text-xs ${active ? "border-accent bg-accent-soft text-accent-dark" : "border-line hover:border-ink/30"}`}>
+                  <button key={p.id} onClick={() => up({ filters: p.f })} className={`rounded-full border px-3 py-2 text-xs pointer-fine:py-1 ${active ? "border-accent bg-accent-soft text-accent-dark" : "border-line hover:border-ink/30"}`}>
                     {p.label}
                   </button>
                 );

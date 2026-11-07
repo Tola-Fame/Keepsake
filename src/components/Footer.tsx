@@ -40,7 +40,7 @@ export default function Footer() {
             <ul className="mt-3 space-y-2 text-sm">
               {c.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-white/80 hover:text-white hover:underline">
+                  <Link href={l.href} className="inline-block py-1.5 text-white/80 hover:text-white hover:underline sm:py-0">
                     {l.label}
                   </Link>
                 </li>

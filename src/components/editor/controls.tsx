@@ -7,13 +7,13 @@ export function ColorPicker({ value, onChange, label, allowTransparent = false }
   return (
     <div>
       {label && <span className="label">{label}</span>}
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-2 pointer-fine:gap-1.5">
         {allowTransparent && (
           <button
             onClick={() => onChange("transparent")}
             title="None"
             aria-label="No color"
-            className={`h-6 w-6 rounded-full border bg-[linear-gradient(45deg,transparent_45%,#e11d48_45%,#e11d48_55%,transparent_55%)] ${value === "transparent" ? "ring-2 ring-accent ring-offset-1" : "border-line"}`}
+            className={`h-8 w-8 rounded-full border pointer-fine:h-6 pointer-fine:w-6 bg-[linear-gradient(45deg,transparent_45%,#e11d48_45%,#e11d48_55%,transparent_55%)] ${value === "transparent" ? "ring-2 ring-accent ring-offset-1" : "border-line"}`}
           />
         )}
         {SWATCHES.map((c) => (
@@ -22,11 +22,11 @@ export function ColorPicker({ value, onChange, label, allowTransparent = false }
             onClick={() => onChange(c)}
             title={c}
             aria-label={`Color ${c}`}
-            className={`h-6 w-6 rounded-full border border-black/10 ${value.toLowerCase() === c ? "ring-2 ring-accent ring-offset-1" : ""}`}
+            className={`h-8 w-8 rounded-full border border-black/10 pointer-fine:h-6 pointer-fine:w-6 ${value.toLowerCase() === c ? "ring-2 ring-accent ring-offset-1" : ""}`}
             style={{ background: c }}
           />
         ))}
-        <label className="relative h-6 w-6 cursor-pointer overflow-hidden rounded-full border border-black/10 bg-[conic-gradient(red,yellow,lime,aqua,blue,magenta,red)]" title="Custom color">
+        <label className="relative h-8 w-8 pointer-fine:h-6 pointer-fine:w-6 cursor-pointer overflow-hidden rounded-full border border-black/10 bg-[conic-gradient(red,yellow,lime,aqua,blue,magenta,red)]" title="Custom color">
           <input type="color" value={isHex ? value : "#000000"} onChange={(e) => onChange(e.target.value)} className="absolute inset-0 cursor-pointer opacity-0" aria-label="Custom color" />
         </label>
       </div>

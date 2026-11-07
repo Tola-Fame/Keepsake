@@ -59,7 +59,7 @@ export default async function Page({ searchParams }: Props) {
           </Link>
         ))}
       </div>
-      <form className="mt-3 flex items-center gap-2 text-sm" action="/admin/orders">
+      <form className="mt-3 flex flex-wrap items-center gap-2 text-sm" action="/admin/orders">
         {status && <input type="hidden" name="status" value={status} />}
         <label htmlFor="vendor" className="text-muted">
           Vendor
@@ -79,7 +79,33 @@ export default async function Page({ searchParams }: Props) {
       {orders.length === 0 ? (
         <p className="mt-10 rounded-3xl border border-dashed border-line bg-white p-10 text-center text-muted">No orders here yet.</p>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-3xl border border-line bg-white">
+        <>
+        {/* phones: one card per order */}
+        <ul className="mt-6 space-y-3 md:hidden">
+          {orders.map((o) => {
+            const s = statusInfo(o.status);
+            return (
+              <li key={o.id}>
+                <Link href={`/admin/orders/${o.id}`} className="block rounded-3xl border border-line bg-white p-4 active:bg-paper">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-semibold text-accent">{orderNumber(o.number)}</span>
+                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${s.className}`}>{s.label}</span>
+                  </div>
+                  <p className="mt-2 font-semibold">
+                    {o.title} <span className="font-normal text-muted">× {o.quantity}</span>
+                  </p>
+                  <p className="mt-1 text-sm">
+                    {o.shipping.name} <span className="text-muted">· {o.shipping.city}, {o.shipping.country}</span>
+                  </p>
+                  <p className="mt-1 text-xs text-muted">
+                    {o.vendorName ?? "No vendor yet"} · placed {o.createdAt.toLocaleDateString()}
+                  </p>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="mt-6 hidden overflow-x-auto rounded-3xl border border-line bg-white md:block">
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead className="border-b border-line text-xs uppercase tracking-wide text-muted">
               <tr>
@@ -121,6 +147,7 @@ export default async function Page({ searchParams }: Props) {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </main>
   );

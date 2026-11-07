@@ -97,7 +97,7 @@ export default function PhotosPanel({ ed }: { ed: EditorApi }) {
                 {p.uploadedBy && <span className="pointer-events-none absolute inset-x-0 bottom-0 truncate bg-black/55 px-1 py-0.5 text-[10px] text-white">{p.uploadedBy}</span>}
                 <button
                   onClick={() => confirm("Delete this photo from the album?") && ed.removePhoto(p.id)}
-                  className="absolute right-1 top-1 hidden h-6 w-6 items-center justify-center rounded-full bg-white/90 text-red-600 shadow group-hover:flex"
+                  className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 shadow pointer-fine:hidden pointer-fine:h-6 pointer-fine:w-6 pointer-fine:group-hover:flex"
                   aria-label="Delete photo"
                 >
                   <Trash2 className="h-3.5 w-3.5" aria-hidden />

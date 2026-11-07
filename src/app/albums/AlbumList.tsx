@@ -60,11 +60,11 @@ function Book({ a, onDelete, onMove, moving }: { a: AlbumSummary; onDelete: () =
         </div>
         <div className="flex shrink-0">
           {onMove && (
-            <button onClick={onMove} disabled={!!moving} className="rounded-full p-1.5 text-muted hover:bg-white hover:text-ink" title="Save to my account" aria-label="Save to my account">
+            <button onClick={onMove} disabled={!!moving} className="rounded-full p-2.5 text-muted hover:bg-white hover:text-ink pointer-fine:p-1.5" title="Save to my account" aria-label="Save to my account">
               {moving ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <CloudUpload className="h-4 w-4" aria-hidden />}
             </button>
           )}
-          <button onClick={onDelete} className="rounded-full p-1.5 text-muted hover:bg-red-50 hover:text-red-600" title="Delete book" aria-label="Delete book">
+          <button onClick={onDelete} className="rounded-full p-2.5 text-muted hover:bg-red-50 hover:text-red-600 pointer-fine:p-1.5" title="Delete book" aria-label="Delete book">
             <Trash2 className="h-4 w-4" aria-hidden />
           </button>
         </div>

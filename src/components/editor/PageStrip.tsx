@@ -33,7 +33,7 @@ export default function PageStrip({
   const portrait = doc.size === "8.5x11" || doc.size === "a4";
   return (
     <div className="flex items-center gap-2 border-t border-line bg-white px-2 py-2">
-      <div className="hidden shrink-0 flex-col gap-0.5 sm:flex">
+      <div className="flex shrink-0 flex-col gap-0.5">
         <IconButton label="Move page left" onClick={() => onMove(index, index - 1)} disabled={index === 0}>
           <ChevronLeft className="h-4 w-4" />
         </IconButton>
@@ -53,7 +53,7 @@ export default function PageStrip({
               setDragFrom(null);
             }}
             onClick={() => onSelect(i)}
-            className={`shrink-0 text-center ${portrait ? "w-14" : "w-20"}`}
+            className={`shrink-0 text-center ${portrait ? "w-12 sm:w-14" : "w-16 sm:w-20"}`}
             aria-label={`Page ${i + 1}`}
           >
             <div className={`overflow-hidden rounded-sm shadow-sm ring-offset-1 transition ${i === index ? "ring-2 ring-accent" : "ring-1 ring-black/10 hover:ring-black/30"}`}>
@@ -62,7 +62,7 @@ export default function PageStrip({
             <span className={`mt-1 block text-[11px] ${i === index ? "font-semibold text-accent-dark" : "text-muted"}`}>{i === 0 ? "Cover" : i + 1}</span>
           </button>
         ))}
-        <button onClick={onAdd} className={`flex shrink-0 flex-col items-center justify-center rounded-sm border-2 border-dashed border-line text-muted hover:border-accent hover:text-accent ${portrait ? "h-[75px] w-14" : "h-20 w-20"}`} aria-label="Add page">
+        <button onClick={onAdd} className={`flex shrink-0 flex-col items-center justify-center rounded-sm border-2 border-dashed border-line text-muted hover:border-accent hover:text-accent ${portrait ? "h-16 w-12 sm:h-[75px] sm:w-14" : "h-16 w-16 sm:h-20 sm:w-20"}`} aria-label="Add page">
           <Plus className="h-5 w-5" aria-hidden />
           <span className="text-[11px]">Add</span>
         </button>

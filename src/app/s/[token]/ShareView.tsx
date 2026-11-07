@@ -98,7 +98,7 @@ export default function ShareView({
       </header>
       <main className="mx-auto max-w-5xl px-4 pb-16">
         <h1 className="mb-6 text-center font-display text-3xl font-bold sm:text-4xl">{title}</h1>
-        <AlbumViewer doc={doc} photos={photoMap} />
+        <AlbumViewer doc={doc} photos={photoMap} outsideArrows />
 
         {allowGuestUploads && (
           <section className="mx-auto mt-14 max-w-2xl rounded-2xl border border-line bg-white p-6">
