@@ -90,7 +90,7 @@ export default function Home() {
           <h2 id="demo-title" className="font-display text-3xl font-extrabold sm:text-4xl">
             See how it works
           </h2>
-          <p className="mt-2 text-muted">A two-minute tour, from choosing a design to downloading your book.</p>
+          <p className="mt-2 text-muted">A two-and-a-half-minute tour: add trip photos, make the book, then print, order or share it.</p>
           <div className="mt-8 overflow-hidden rounded-3xl border border-line bg-white shadow-xl">
             <video
               className="block aspect-video w-full bg-paper"
@@ -98,7 +98,7 @@ export default function Home() {
               playsInline
               preload="none"
               poster="/demo/keepsake-demo-poster.jpg"
-              aria-label="Demo video: how to make a photo album with Keepsake"
+              aria-label="Demo video: how to make a travel book with Keepsake"
             >
               <source src="/demo/keepsake-demo.mp4" type="video/mp4" />
               Your browser can&apos;t play this video.{" "}
