@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TemplateShowcase from "@/components/TemplateShowcase";
 import WindowGlow from "@/components/brand/WindowGlow";
+import PrintingRoll from "@/components/web/PrintingRoll";
 import PhotoRibbon from "@/components/motion/PhotoRibbon";
 import GrowingStem from "@/components/motion/GrowingStem";
 import { AutoLayout, DropInPhotos, ShipIt } from "@/components/motion/StepVisuals";
@@ -78,6 +79,8 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        <PrintingRoll />
 
         <section className="mx-auto max-w-6xl px-4" aria-labelledby="shelf-title">
           <div className="grid items-center gap-10 rounded-[2rem] bg-white p-8 ring-1 ring-line sm:p-12 md:grid-cols-2">
