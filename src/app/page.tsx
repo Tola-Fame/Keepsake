@@ -104,7 +104,7 @@ export default function Home() {
           <h2 id="demo-title" className="font-display text-3xl font-extrabold sm:text-4xl">
             See how it works
           </h2>
-          <p className="mt-2 text-muted">A two-and-a-half-minute tour: add trip photos, make the book, then print, order or share it.</p>
+          <p className="mt-2 text-muted">A three-minute tour: add trip photos, make the book, then print, order or share it.</p>
           <div className="mt-8 overflow-hidden rounded-3xl border border-line bg-white shadow-xl">
             <video
               className="block aspect-video w-full bg-paper"
