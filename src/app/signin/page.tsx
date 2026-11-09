@@ -53,6 +53,8 @@ export default async function SignIn({ searchParams }: { searchParams: Promise<R
             </div>
           ) : (
             <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/mark.svg" alt="" width={40} height={48} className="mb-4 h-12 w-10" />
               <h1 className="font-display text-2xl font-bold">Sign in to Keepsake</h1>
               <p className="mt-2 text-sm text-muted">Save albums online, open them on any device, and share them with family and friends.</p>
               {sp.error && <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{errorText[sp.error] ?? "Sign-in failed. Please try again."}</p>}

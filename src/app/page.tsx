@@ -3,6 +3,7 @@ import { BookOpen, Images, LayoutTemplate, Package, Share2, Sparkles, Truck, Use
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TemplateShowcase from "@/components/TemplateShowcase";
+import WindowGlow from "@/components/brand/WindowGlow";
 
 const steps = [
   { icon: Images, title: "Add your photos", text: "From your phone, your computer or Google Photos.", bg: "bg-peach" },
@@ -27,7 +28,10 @@ export default function Home() {
         <section className="mx-auto max-w-6xl px-4 pt-6 sm:pt-10">
           <div className="grid items-center gap-10 overflow-hidden rounded-[2rem] bg-charcoal px-6 py-10 text-white sm:px-12 sm:py-14 md:grid-cols-[1fr_1.1fr]">
             <div className="relative order-2 md:order-1">
-              <TemplateShowcase variant="hero" />
+              <WindowGlow className="left-1/2 top-1/2 aspect-[3/4] h-[124%] -translate-x-1/2 -translate-y-1/2" />
+              <div className="relative">
+                <TemplateShowcase variant="hero" />
+              </div>
               <span className="absolute -right-1 top-1/3 flex h-20 w-20 rotate-12 items-center justify-center rounded-full border-4 border-white bg-accent text-center text-xs font-extrabold leading-tight shadow-lg sm:h-24 sm:w-24 sm:text-sm">
                 Printed
                 <br />& shipped
@@ -136,12 +140,16 @@ export default function Home() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-16">
-          <div className="rounded-[2rem] bg-rose px-6 py-14 text-center">
-            <h2 className="font-display text-3xl font-extrabold sm:text-4xl">Where did you go this year?</h2>
-            <p className="mx-auto mt-3 max-w-md text-ink/75">Turn it into a book in a few minutes.</p>
-            <Link href="/trip" className="btn-primary mt-8 px-8 py-3 text-base">
-              Make a travel book
-            </Link>
+          <div className="grid items-center gap-8 overflow-hidden rounded-[2rem] bg-rose px-6 py-12 text-center sm:px-12 md:grid-cols-[1fr_auto] md:text-left">
+            <div>
+              <h2 className="font-display text-3xl font-extrabold sm:text-4xl">Where did you go this year?</h2>
+              <p className="mx-auto mt-3 max-w-md text-ink/75 md:mx-0">Pack the photos, the tickets and the little moments into one book. It takes a few minutes.</p>
+              <Link href="/trip" className="btn-primary mt-8 px-8 py-3 text-base">
+                Make a travel book
+              </Link>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/window-illustration.svg" alt="" width={440} height={540} className="mx-auto w-56 sm:w-64 md:w-72" />
           </div>
         </section>
       </main>

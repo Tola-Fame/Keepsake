@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { BookHeart, LogOut, Menu, Plane, X } from "lucide-react";
+import { LogOut, Menu, Plane, X } from "lucide-react";
 import { useApp } from "./AppProvider";
 import { signOutAction } from "@/app/actions";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <Link href="/" className={`flex items-center gap-2 font-display text-xl font-extrabold tracking-tight ${className}`}>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-white">
-        <BookHeart className="h-4.5 w-4.5" aria-hidden />
-      </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/mark.svg" alt="" width={30} height={36} className="h-9 w-[30px]" />
       Keepsake
     </Link>
   );

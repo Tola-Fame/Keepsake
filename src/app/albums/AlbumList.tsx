@@ -152,6 +152,8 @@ export default function AlbumList() {
 
       {empty && (
         <div className="mt-10 rounded-2xl border border-dashed border-line bg-white p-10 text-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/window-illustration.svg" alt="" width={440} height={540} className="mx-auto mb-6 w-36" />
           <p className="font-display text-2xl font-bold">Your bookshelf is empty</p>
           <p className="mt-2 text-muted">Drop in photos from a trip and we&apos;ll make the book for you, or start any album from a template.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
