@@ -4,11 +4,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TemplateShowcase from "@/components/TemplateShowcase";
 import WindowGlow from "@/components/brand/WindowGlow";
+import PhotoRibbon from "@/components/motion/PhotoRibbon";
+import GrowingStem from "@/components/motion/GrowingStem";
+import { AutoLayout, DropInPhotos, ShipIt } from "@/components/motion/StepVisuals";
 
 const steps = [
-  { icon: Images, title: "Add your photos", text: "From your phone, your computer or Google Photos.", bg: "bg-peach" },
-  { icon: Sparkles, title: "We lay it out", text: "Photos are sorted by day and placed on pages for you. Change anything you like.", bg: "bg-mint" },
-  { icon: Truck, title: "We print and ship", text: "Order a printed copy and we deliver it to your door.", bg: "bg-lilac" },
+  { icon: Images, title: "Add your photos", text: "From your phone, your computer or Google Photos.", bg: "bg-peach", Scene: DropInPhotos },
+  { icon: Sparkles, title: "We lay it out", text: "Photos are sorted by day and placed on pages for you. Change anything you like.", bg: "bg-mint", Scene: AutoLayout },
+  { icon: Truck, title: "We print and ship", text: "Order a printed copy and we deliver it to your door.", bg: "bg-lilac", Scene: ShipIt },
 ];
 
 const features = [
@@ -54,11 +57,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-16" aria-labelledby="how-title">
+        <PhotoRibbon />
+
+        <section className="mx-auto max-w-6xl px-4 pb-16 pt-4" aria-labelledby="how-title">
           <h2 id="how-title" className="text-center font-display text-3xl font-extrabold sm:text-4xl">
             From camera roll to bookshelf
           </h2>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <GrowingStem className="mx-auto mt-4 max-w-2xl" />
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
             {steps.map((s, i) => (
               <div key={s.title} className={`rounded-3xl p-7 ${s.bg}`}>
                 <div className="flex items-center gap-3">
@@ -67,6 +73,7 @@ export default function Home() {
                 </div>
                 <h3 className="mt-5 font-display text-xl font-extrabold">{s.title}</h3>
                 <p className="mt-1 text-ink/75">{s.text}</p>
+                <s.Scene />
               </div>
             ))}
           </div>

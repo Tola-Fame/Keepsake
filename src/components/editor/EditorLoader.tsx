@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import Buddy from "@/components/motion/Buddy";
 import type { Album } from "@/lib/types";
 import { localStore } from "@/lib/store/local";
 
@@ -14,8 +14,9 @@ const Editor = dynamic(() => import("./Editor"), {
 
 function Loading() {
   return (
-    <div className="flex h-dvh items-center justify-center gap-2 text-muted">
-      <Loader2 className="h-5 w-5 animate-spin" aria-hidden /> Opening album…
+    <div className="flex h-dvh flex-col items-center justify-center gap-4 font-bold text-muted">
+      <Buddy size={64} />
+      <span>Opening your book…</span>
     </div>
   );
 }

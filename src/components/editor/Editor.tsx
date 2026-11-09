@@ -46,6 +46,7 @@ import Properties from "./Properties";
 import PageStrip from "./PageStrip";
 import ShareDialog from "./ShareDialog";
 import AlbumViewer from "../AlbumViewer";
+import Buddy from "../motion/Buddy";
 import { IconButton } from "./controls";
 import { useApp } from "../AppProvider";
 
@@ -745,7 +746,7 @@ export default function Editor({ album }: { album: Album }) {
       {(exporting || moving) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
-            <Loader2 className="mx-auto h-8 w-8 animate-spin text-accent" aria-hidden />
+            <Buddy size={64} className="mx-auto" />
             <p className="mt-3 font-semibold">{exporting ? exporting.label : "Saving to your account"}</p>
             <p className="mt-1 text-sm text-muted">{exporting ? `Page ${Math.min(exporting.done + 1, exporting.total)} of ${exporting.total}` : moving}</p>
             {exporting && (

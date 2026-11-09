@@ -13,6 +13,7 @@ import { MAX_TRIP_PHOTOS, buildTripDoc, dateRangeLabel, dayLabel, groupByDay, ty
 import { localStore } from "@/lib/store/local";
 import { cloudStore } from "@/lib/store/cloud";
 import { useTemplatePreview } from "@/components/TemplateShowcase";
+import SliceReveal from "@/components/motion/SliceReveal";
 import PagePreview from "@/components/canvas/PagePreview";
 import { useApp } from "@/components/AppProvider";
 import GooglePhotosButton from "@/components/GooglePhotosButton";
@@ -201,9 +202,9 @@ export default function TripBuilder() {
         </section>
 
         <aside className="h-fit space-y-5 rounded-2xl border border-line bg-white p-5 lg:sticky lg:top-24">
-          <div className="mx-auto max-w-[260px] overflow-hidden rounded shadow-lg ring-1 ring-black/5">
+          <SliceReveal revealKey={templateId} className="mx-auto max-w-[260px] overflow-hidden rounded shadow-lg ring-1 ring-black/5">
             {preview ? <PagePreview doc={preview.doc} page={preview.doc.pages[0]} photos={preview.photos} useThumbs={false} /> : <div className="aspect-square bg-line/50" />}
-          </div>
+          </SliceReveal>
           <div>
             <p className="label">Cover color</p>
             <div className="flex flex-wrap gap-2">

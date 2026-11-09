@@ -12,6 +12,7 @@ import { localStore } from "@/lib/store/local";
 import { cloudStore } from "@/lib/store/cloud";
 import { TemplateCover, useTemplatePreview } from "@/components/TemplateShowcase";
 import PagePreview from "@/components/canvas/PagePreview";
+import SliceReveal from "@/components/motion/SliceReveal";
 import { useApp } from "@/components/AppProvider";
 
 export default function NewAlbum() {
@@ -94,9 +95,9 @@ export default function NewAlbum() {
         </section>
 
         <aside className="h-fit space-y-5 rounded-2xl border border-line bg-white p-5 lg:sticky lg:top-24">
-          <div className="mx-auto max-w-[260px] overflow-hidden rounded shadow-lg ring-1 ring-black/5">
+          <SliceReveal revealKey={templateId} className="mx-auto max-w-[260px] overflow-hidden rounded shadow-lg ring-1 ring-black/5">
             {preview ? <PagePreview doc={preview.doc} page={preview.doc.pages[0]} photos={preview.photos} useThumbs={false} /> : <div className="aspect-square bg-line/50" />}
-          </div>
+          </SliceReveal>
           <div>
             <label className="label" htmlFor="title">Album title</label>
             <input id="title" className="input" placeholder={t.titlePlaceholder} value={title} onChange={(e) => setTitle(e.target.value)} maxLength={80} />
