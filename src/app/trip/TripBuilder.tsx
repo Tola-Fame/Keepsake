@@ -14,6 +14,7 @@ import { localStore } from "@/lib/store/local";
 import { cloudStore } from "@/lib/store/cloud";
 import { useTemplatePreview } from "@/components/TemplateShowcase";
 import SliceReveal from "@/components/motion/SliceReveal";
+import PhotoConstellation from "@/components/motion/PhotoConstellation";
 import PagePreview from "@/components/canvas/PagePreview";
 import { useApp } from "@/components/AppProvider";
 import GooglePhotosButton from "@/components/GooglePhotosButton";
@@ -141,18 +142,21 @@ export default function TripBuilder() {
               setDragging(false);
               if (!busy) addFiles(e.dataTransfer.files);
             }}
-            className={`rounded-2xl border-2 border-dashed p-8 text-center transition ${dragging ? "border-accent bg-accent-soft" : "border-line bg-white"}`}
+            className={`trip-drop ${picked.length ? "is-compact" : ""} ${dragging ? "is-dragging" : ""}`}
           >
-            <ImagePlus className="mx-auto h-8 w-8 text-accent" aria-hidden />
-            <p className="mt-3 font-semibold">Drop your trip photos here</p>
-            <p className="mt-1 text-sm text-muted">Up to {MAX_TRIP_PHOTOS} photos. JPG, PNG or WebP.</p>
-            <div className="mt-4 flex flex-wrap items-start justify-center gap-2">
-              <button className="btn-secondary" onClick={() => inputRef.current?.click()} disabled={busy || reading}>
-                {reading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
-                Choose photos
-              </button>
-              <div>
-                <GooglePhotosButton onPicked={addFiles} max={MAX_TRIP_PHOTOS - picked.length} disabled={busy || reading} />
+            {!picked.length && <PhotoConstellation />}
+            <div className="trip-drop-copy">
+              <ImagePlus className="mx-auto h-8 w-8" aria-hidden />
+              <p className="mt-3 font-display text-xl font-extrabold sm:text-2xl">{picked.length ? "Add more photos" : "Drop your trip photos here"}</p>
+              <p className="mt-1 text-sm text-white/85">Up to {MAX_TRIP_PHOTOS} photos. JPG, PNG or WebP.</p>
+              <div className="mt-5 flex flex-wrap items-start justify-center gap-2">
+                <button className="glass-pill" onClick={() => inputRef.current?.click()} disabled={busy || reading}>
+                  {reading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
+                  Choose photos
+                </button>
+                <div className="[&_p]:rounded-lg [&_p]:bg-white [&_p]:px-2 [&_p]:py-1">
+                  <GooglePhotosButton onPicked={addFiles} max={MAX_TRIP_PHOTOS - picked.length} disabled={busy || reading} className="glass-pill" />
+                </div>
               </div>
             </div>
             <input

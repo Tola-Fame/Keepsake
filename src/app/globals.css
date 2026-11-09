@@ -264,3 +264,80 @@ input[type="range"] {
   .growing-stem path { transition: none; stroke-dashoffset: 0; }
   .growing-stem-bloom { transition: none; transform: none; }
 }
+
+/* ---- Interface: trip photo drop area ---- */
+.trip-drop {
+  position: relative;
+  display: flex;
+  min-height: 400px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 1.75rem;
+  padding: 64px 24px;
+  text-align: center;
+  color: #fff;
+  background: radial-gradient(130% 90% at 50% 115%, #ffb27a 0%, #ff6fae 32%, #8a4fd8 66%, #2b2360 100%);
+  transition: min-height 0.4s ease, padding 0.4s ease;
+}
+.trip-drop.is-compact { min-height: 0; padding: 28px 20px; background: linear-gradient(115deg, #2b2360, #8a4fd8 45%, #ff6fae); }
+.trip-drop.is-dragging::after { content: ""; position: absolute; inset: 12px; border: 3px dashed rgba(255, 255, 255, 0.85); border-radius: 1.25rem; pointer-events: none; }
+.trip-drop-copy { position: relative; z-index: 20; text-shadow: 0 1px 12px rgba(43, 35, 96, 0.45); }
+.trip-drop-copy::before {
+  content: "";
+  position: absolute;
+  inset: -40px -60px;
+  z-index: -1;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(43, 35, 96, 0.45), transparent);
+}
+.glass-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), 0 10px 30px -12px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition: background 0.2s ease, transform 0.2s ease;
+  text-shadow: none;
+}
+.glass-pill:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-1px); }
+.glass-pill:disabled { opacity: 0.6; transform: none; }
+.constellation { position: absolute; inset: 0; }
+.constellation-tile {
+  position: absolute;
+  transform: translate(-50%, -50%) rotate(var(--r));
+  animation: tile-float 7s ease-in-out infinite;
+}
+.constellation-tile img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.6); }
+.constellation-tile.is-sticker img { aspect-ratio: 1; object-fit: contain; border-radius: 0; box-shadow: none; }
+@keyframes tile-float {
+  0%, 100% { transform: translate(-50%, -50%) rotate(var(--r)); }
+  50% { transform: translate(-50%, calc(-50% - 10px)) rotate(calc(var(--r) * -0.4)); }
+}
+
+/* ---- Interface: floating keepsakes (sign-in) ---- */
+.float-keepsake { position: absolute; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+.float-keepsake img { position: relative; animation: keepsake-bob 5s ease-in-out infinite; animation-delay: inherit; }
+.float-keepsake::after {
+  content: "";
+  width: 70%;
+  height: 12px;
+  margin-top: 10px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(46, 43, 48, 0.22), transparent);
+  animation: keepsake-shadow 5s ease-in-out infinite;
+  animation-delay: inherit;
+}
+@keyframes keepsake-bob { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-12px) rotate(calc(var(--r, 0deg) * -1)); } }
+@keyframes keepsake-shadow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.75); opacity: 0.6; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .constellation-tile, .float-keepsake img, .float-keepsake::after { animation: none !important; }
+}

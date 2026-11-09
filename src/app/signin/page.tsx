@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Mail } from "lucide-react";
 import Header from "@/components/Header";
+import { FloatingKeepsakesSides, FloatingKeepsakesTop } from "@/components/motion/FloatingKeepsakes";
 import { currentUser } from "@/auth";
 import { publicConfig } from "@/lib/config";
 import { signInWithEmail, signInWithGoogle } from "../actions";
@@ -35,8 +36,11 @@ export default async function SignIn({ searchParams }: { searchParams: Promise<R
   return (
     <>
       <Header />
-      <main className="mx-auto max-w-md px-4 py-12 sm:py-20">
-        <div className="rounded-2xl border border-line bg-white p-6 sm:p-8">
+      <div className="relative min-h-[calc(100dvh-4rem)]">
+      <FloatingKeepsakesSides />
+      <main className="relative mx-auto max-w-md px-4 py-10 sm:py-20">
+        <FloatingKeepsakesTop />
+        <div className="rounded-3xl border border-line bg-white/90 p-6 shadow-[0_30px_80px_-40px_rgba(46,43,48,0.45)] backdrop-blur sm:p-8">
           {sp.sent ? (
             <div className="text-center">
               <Mail className="mx-auto h-10 w-10 text-accent" aria-hidden />
@@ -98,6 +102,7 @@ export default async function SignIn({ searchParams }: { searchParams: Promise<R
           )}
         </div>
       </main>
+      </div>
     </>
   );
 }

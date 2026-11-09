@@ -148,7 +148,7 @@ function PhotoContent({ el, src, pixelRatio, showPlaceholders }: { el: PhotoEl; 
 }
 
 function StickerContent({ el }: { el: Extract<AlbumElement, { type: "sticker" }> }) {
-  const img = useImg(stickerDataUrl(el.stickerId, el.color));
+  const img = useImg(stickerDataUrl(el.stickerId, el.color, el.dieCut));
   if (!img) return <Rect width={el.width} height={el.height} fill="transparent" />;
   return <KImage image={img} width={el.width} height={el.height} />;
 }
@@ -333,7 +333,7 @@ export default function PageView(props: PageViewProps) {
     const s: string[] = [];
     for (const e of page.elements) {
       if (e.type === "photo" && e.photoId && photos[e.photoId]) s.push(props.useThumbs ? photos[e.photoId].thumb : photos[e.photoId].src);
-      if (e.type === "sticker") s.push(stickerDataUrl(e.stickerId, e.color));
+      if (e.type === "sticker") s.push(stickerDataUrl(e.stickerId, e.color, e.dieCut));
     }
     return s;
   }, [page.elements, photos, props.useThumbs]);

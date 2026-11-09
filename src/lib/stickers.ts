@@ -233,12 +233,23 @@ export function stickerById(id: string) {
   return STICKERS.find((s) => s.id === id);
 }
 
-export function stickerSvg(id: string, color: string) {
+// Die-cut look: a thick white border around the sticker's outline plus a soft shadow.
+const DIE_CUT_FILTER = `<filter id="die" x="-25%" y="-25%" width="150%" height="150%">
+<feMorphology in="SourceAlpha" operator="dilate" radius="5" result="thick"/>
+<feFlood flood-color="#fff"/><feComposite in2="thick" operator="in" result="white"/>
+<feGaussianBlur in="thick" stdDeviation="3"/><feOffset dy="3" result="blur"/>
+<feFlood flood-color="#2e2b30" flood-opacity=".22"/><feComposite in2="blur" operator="in" result="shadow"/>
+<feMerge><feMergeNode in="shadow"/><feMergeNode in="white"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>`;
+
+export function stickerSvg(id: string, color: string, dieCut = false) {
   const def = stickerById(id);
   if (!def) return "";
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="400" height="400">${def.svg.replaceAll("{C}", color)}</svg>`;
+  const art = def.svg.replaceAll("{C}", color);
+  if (!dieCut) return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="400" height="400">${art}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 -14 128 128" width="400" height="400"><defs>${DIE_CUT_FILTER}</defs><g filter="url(#die)">${art}</g></svg>`;
 }
 
-export function stickerDataUrl(id: string, color: string) {
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(stickerSvg(id, color))}`;
+export function stickerDataUrl(id: string, color: string, dieCut = false) {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(stickerSvg(id, color, dieCut))}`;
 }

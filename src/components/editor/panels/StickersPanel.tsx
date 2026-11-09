@@ -22,11 +22,11 @@ export default function StickersPanel({ ed }: { ed: EditorApi }) {
             <button
               key={s.id}
               title={s.name}
-              onClick={() => ed.addElement(newStickerEl(s.id, s.defaultColor, { ...center, width: size, height: size, rotation: 0 }))}
-              className="aspect-square rounded-lg border border-line bg-white p-1.5 transition hover:border-accent"
+              onClick={() => ed.addElement({ ...newStickerEl(s.id, s.defaultColor, { ...center, width: size, height: size, rotation: 0 }), dieCut: true })}
+              className="aspect-square rounded-xl bg-paper p-1 transition hover:-translate-y-0.5 hover:bg-accent-soft"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={stickerDataUrl(s.id, s.defaultColor)} alt={s.name} className="h-full w-full" />
+              <img src={stickerDataUrl(s.id, s.defaultColor, true)} alt={s.name} className="h-full w-full" />
             </button>
           ))}
         </div>

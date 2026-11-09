@@ -56,6 +56,8 @@ export interface StickerEl extends BaseEl {
   type: "sticker";
   stickerId: string;
   color: string;
+  /** White die-cut border and shadow, like a real sticker. */
+  dieCut?: boolean;
 }
 
 export interface ShapeEl extends BaseEl {

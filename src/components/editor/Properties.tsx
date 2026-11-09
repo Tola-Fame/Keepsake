@@ -125,7 +125,12 @@ function TextProps({ ed, el }: { ed: EditorApi; el: TextEl }) {
 }
 
 function StickerProps({ ed, el }: { ed: EditorApi; el: StickerEl }) {
-  return <ColorPicker label="Color" value={el.color} onChange={(c) => ed.updateElement(el.id, { color: c }, `sc-${el.id}`)} />;
+  return (
+    <div className="space-y-5">
+      <ColorPicker label="Color" value={el.color} onChange={(c) => ed.updateElement(el.id, { color: c }, `sc-${el.id}`)} />
+      <Toggle label="White sticker border" checked={!!el.dieCut} onChange={(v) => ed.updateElement(el.id, { dieCut: v })} />
+    </div>
+  );
 }
 
 function ShapeProps({ ed, el }: { ed: EditorApi; el: ShapeEl }) {
